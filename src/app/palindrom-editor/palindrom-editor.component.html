@@ -1,3 +1,4 @@
-<p>palindrom-editor works!</p>
 
-<app-letter-box></app-letter-box>
+<app-letter-box  *ngFor="let currLetter of letters ; let i = index"           [letter]="currLetter" [index]="i" (userInput)="onLetterInput($event)"></app-letter-box>
+<app-pivot-letter (newUserInput)="onLetterChanged($event)"></app-pivot-letter>
+<app-letter-box  *ngFor="let currLetter of letters.reverse() ; let i = index" [letter]="currLetter" [index]="letters.length-i-1" (userInput)="onLetterInput($event)"></app-letter-box>

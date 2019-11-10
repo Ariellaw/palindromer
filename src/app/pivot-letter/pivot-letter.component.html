@@ -1,0 +1,2 @@
+<!-- <input type="text" maxlength="2" [value]="letter" size=1 (input)="onUserInput($event.target.value)"/> -->
+<input type="text" maxlength="1" [(ngModel)]="letter" size=1 (keyup)="onUserInput($event)"/>
