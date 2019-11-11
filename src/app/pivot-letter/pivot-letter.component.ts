@@ -6,17 +6,33 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
   styleUrls: ["./pivot-letter.component.scss"]
 })
 export class PivotLetterComponent implements OnInit {
-  letter: string = "a";
+  input: string = "a";
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
+  @Output() backspace = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}
-  onUserInput(event: KeyboardEvent ) {
-    console.log("test1", this.letter);
-      this.newUserInput.emit({
-        newLetter: this.letter
-      });
-      this.letter = event.key;
-      console.log("test2" ,this.letter);
+
+  onUserInput(event: KeyboardEvent) {
+    var lettersRegex = /^[A-Za-z]+$/;
+    var isOneCharacter = this.input.length===1;
+     console.log("this.input", this.input, event, event.key)
+
+    if(isOneCharacter){
+      event.preventDefault();
+      return;
+    }
+    // else if(event.key === "Backspace"){
+    //   this.backspace.emit();
+    // }
+    else if(this.input.length===2){
+      var newCharacter= this.input.charAt(0);
+      if(newCharacter.match(lettersRegex)){
+        this.newUserInput.emit({
+          newLetter:newCharacter
+        })
+        this.input = this.input.slice(1);
+      }
+    }
   }
 }
