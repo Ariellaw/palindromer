@@ -11,14 +11,18 @@ export class LetterBoxComponent implements OnInit {
 
   @Output() backspace = new EventEmitter<{letterIndex:number}>()
   @Output() userInput = new EventEmitter<{newLetter:string, letterIndex: number}>()
+  @Output() rightArrowKey = new EventEmitter<{}>();
   constructor() { }
 
   ngOnInit() {
   }
+  
   onUserInput(event: any){
 
-
-    console.log("onUserInput window event", window.event);
+    if(event.keyCode===39){
+      console.log("right click");
+      this.rightArrowKey.emit();
+    }
     var lettersRegex = /^[A-Za-z]+$/;
 
     if(this.letter.match(lettersRegex)){

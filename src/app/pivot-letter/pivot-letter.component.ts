@@ -16,7 +16,6 @@ export class PivotLetterComponent implements OnInit {
   onUserInput(event: KeyboardEvent) {
     var lettersRegex = /^[A-Za-z]+$/;
     var isOneCharacter = this.input.length===1;
-     console.log("this.input", this.input, event, event.key)
 
     if(isOneCharacter){
       event.preventDefault();
