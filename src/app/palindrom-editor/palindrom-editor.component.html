@@ -1,8 +1,8 @@
 <div class="palindrom">
-    <app-letter-box (backspace)="onBackspace($event)" *ngFor="let currLetter of lettersLeft ; let i = index"
+    <app-letter-box (backspace)="onBackspaceLeft($event)" *ngFor="let currLetter of lettersLeft ; let i = index"
         [letter]="currLetter" [index]="i" (letterAdded)="onLetterAddedLeft($event)" (newLetter)="onLetterInputLeft($event)"></app-letter-box>
     <app-pivot-letter (backspace)="deleteLastLetter()" (newUserInput)="onPivotChanged($event)"></app-pivot-letter>
-    <app-letter-box (backspace)="onBackspace($event)" *ngFor="let currLetter of lettersRight; let i = index"
+    <app-letter-box (backspace)="onBackspaceRight($event)" *ngFor="let currLetter of lettersRight; let i = index"
         [letter]="currLetter" [index]="i" (letterAdded)="onLetterAddedRight($event)" (newLetter)="onLetterInputRight($event)"></app-letter-box>
 
 
