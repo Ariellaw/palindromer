@@ -32,7 +32,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onLetterInput($event:{newLetter:string, letterIndex: number}){
-
+    console.log("parent")
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length-1-leftLetterIdx;
 
