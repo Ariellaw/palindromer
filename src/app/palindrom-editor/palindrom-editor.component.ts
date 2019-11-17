@@ -31,15 +31,35 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight.unshift($letter.newLetter);
   }
 
-  onLetterInput($event:{newLetter:string, letterIndex: number}){
-    console.log("parent")
+  onLetterInputRight($event:{newLetter:string, letterIndex: number}){
+    let rightLetterIdx = $event.letterIndex;
+    let leftLetterIdx = this.lettersRight.length-1-rightLetterIdx;
+
+    this.lettersLeft[leftLetterIdx] = $event.newLetter;
+    this.lettersRight[rightLetterIdx] = $event.newLetter;
+  }
+  onLetterInputLeft($event:{newLetter:string, letterIndex: number}){
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length-1-leftLetterIdx;
 
     this.lettersLeft[leftLetterIdx] = $event.newLetter;
     this.lettersRight[rightLetterIdx] = $event.newLetter;
+  }
+  onLetterAddedRight($event:{newLetter:string, letterIndex: number}){
 
   }
+  onLetterAddedLeft($event:{newLetter:string, letterIndex: number}){
+    let leftLetterIdx = $event.letterIndex;
+    let rightLetterIdx = this.lettersRight.length-1-leftLetterIdx;
+
+      this.lettersLeft.splice(leftLetterIdx+1, 0, $event.newLetter);
+      this.lettersRight.splice(rightLetterIdx, 0, $event.newLetter)
+
+  }
+
+
+
+
   onBackspace($event:{letterIndex:number}){
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length-1-leftLetterIdx;
