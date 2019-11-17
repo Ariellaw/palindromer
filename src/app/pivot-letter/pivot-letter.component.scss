@@ -9,4 +9,12 @@
     text-align: center;
     margin-right: 5px;
     margin-bottom:5px;
+    color: transparent;
+    text-shadow: 0 0 0 black;
+    &:focus{
+        border: 3px solid rgb(21, 223, 230);
+        outline: none;
+        text-shadow: 0 0 0 red;
+    }
 }
+
