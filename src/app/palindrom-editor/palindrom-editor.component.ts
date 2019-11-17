@@ -46,7 +46,12 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight[rightLetterIdx] = $event.newLetter;
   }
   onLetterAddedRight($event:{newLetter:string, letterIndex: number}){
+    console.log("onLetterAddedRight",$event.letterIndex);
+    let rightLetterIdx = $event.letterIndex;
+    let leftLetterIdx = this.lettersRight.length-1-rightLetterIdx;
 
+    this.lettersLeft.splice(leftLetterIdx, 0, $event.newLetter);
+    this.lettersRight.splice(rightLetterIdx+1, 0, $event.newLetter)
   }
   onLetterAddedLeft($event:{newLetter:string, letterIndex: number}){
     let leftLetterIdx = $event.letterIndex;
