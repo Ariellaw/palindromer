@@ -13,7 +13,6 @@ export class PalindromEditorComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("started", window.document);
   }
 //TODO - move to another file 
 //   isTextSelected(input) {
