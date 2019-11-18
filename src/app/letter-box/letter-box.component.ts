@@ -22,9 +22,14 @@ export class LetterBoxComponent implements OnInit {
   onUserInput(event: any) {
     event.preventDefault();
     var lettersRegex = /^[A-Za-z]+$/;
-    console.log("newLetter", this.letter,"event", event);
-
-    if (this.letter.length === 1 && this.letter.match(lettersRegex)) {
+    // console.log("newLetter", this.letter,"event", event, event.keyCode);
+    if(event.keyCode===37 || event.keyCode===39){
+      var pivotContainer = window.document.getElementById("pivot-input");
+      var focusedElement = document.activeElement.tagName;
+      pivotContainer.focus();
+      console.log("focusedElement", focusedElement)
+    }
+    else if (this.letter.length === 1 && this.letter.match(lettersRegex)) {
       this.newLetter.emit({ newLetter: this.letter, letterIndex: this.index });
     } else if(this.letter.length === 2 ){ 
       this.letterAdded.emit({ newLetter: this.letter[1], letterIndex: this.index });

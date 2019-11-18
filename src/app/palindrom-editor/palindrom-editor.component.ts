@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./palindrom-editor.component.scss']
 })
 export class PalindromEditorComponent implements OnInit {
-  lettersLeft=[];
-  lettersRight=[];
+  lettersLeft=["a","b", "c"];
+  lettersRight=["c", "b", "a" ];
 
   constructor() { }
 
