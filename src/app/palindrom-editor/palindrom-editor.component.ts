@@ -24,7 +24,19 @@ export class PalindromEditorComponent implements OnInit {
 //     }
 // }
 
+  moveFocus($event:{keyCode:number}){
+    var code  = $event.keyCode;
+    var focusedElement = window.document.activeElement;
+    if(focusedElement.parentNode.nextSibling && code===39){
+      console.log("move focus",focusedElement, focusedElement.parentNode.nextSibling.childNodes[0])
 
+      var nextElement = focusedElement.parentNode.nextSibling.childNodes[0] as HTMLElement;
+      nextElement.focus();
+    }else if(focusedElement.parentNode.previousSibling && code===37){
+      var previousElement = focusedElement.parentNode.previousSibling.childNodes[0] as HTMLElement;
+      previousElement.focus();
+    }
+  }
   onPivotChanged($letter:{newLetter:string}){
     this.lettersLeft.push($letter.newLetter);
     this.lettersRight.unshift($letter.newLetter);

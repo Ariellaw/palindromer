@@ -6,11 +6,13 @@ import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
   styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
+  id;
   @Input() letter: string = "h";
   @Input() side: string = "";
   @Input() index: number; //TODO: should a letterbox be aware of its index? maybe there's another solution?
   @Output() letterAdded = new EventEmitter<{newLetter:string; letterIndex: number;}>();
   @Output() backspace = new EventEmitter<{ letterIndex: number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
   @Output() newLetter = new EventEmitter<{
     newLetter: string;
     letterIndex: number;
@@ -27,17 +29,7 @@ export class LetterBoxComponent implements OnInit {
     // console.log("newLetter", this.letter,"event", event, event.keyCode);
     
     if(event.keyCode===37 || event.keyCode===39){
-         //TODO  - move to parent component
-      var focusedElement = window.document.activeElement;
-      var nextElement = focusedElement.parentNode.nextSibling.childNodes[0] as HTMLElement;
-      nextElement.focus();
-     var attributes = focusedElement.hasAttributes();
-      console.log(nextElement,"attributes", attributes)
-      // nextElement.focus();
-      // document.getElementById("left2").focus();
-
-   
-      var letterboxes = document.getElementsByClassName("letter-box");
+      this.moveFocus.emit({keyCode:event.keyCode});
     }
     else if (this.letter.length === 1 && this.letter.match(lettersRegex)) {
       this.newLetter.emit({ newLetter: this.letter, letterIndex: this.index });
