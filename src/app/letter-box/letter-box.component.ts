@@ -20,7 +20,7 @@ export class LetterBoxComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    
+    console.log("test", this.letter, this.side, this.index)
   }
 
   onUserInput(event: any) {
