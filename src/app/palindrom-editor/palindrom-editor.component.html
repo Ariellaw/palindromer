@@ -3,7 +3,7 @@
      side="left"   [letter]="currLetter" [index]="i" (letterAdded)="onLetterAddedLeft($event)" (newLetter)="onLetterInputLeft($event)"></app-letter-box>
     <app-pivot-letter (moveFocus)="moveFocus($event)"  (backspace)="deleteLastLetter()" (newUserInput)="onPivotChanged($event)"></app-pivot-letter>
     <app-letter-box (moveFocus)="moveFocus($event)"  (backspace)="onBackspaceRight($event)" *ngFor="let currLetter of lettersRight; let i = index"
-    side="right" [letter]="currLetter" [index]="lettersLeft.length-i-1" (letterAdded)="onLetterAddedRight($event)" (newLetter)="onLetterInputRight($event)"></app-letter-box>
+    side="right" [letter]="currLetter" [index]="i" (letterAdded)="onLetterAddedRight($event)" (newLetter)="onLetterInputRight($event)"></app-letter-box>
 
 
 

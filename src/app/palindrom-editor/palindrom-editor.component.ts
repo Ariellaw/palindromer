@@ -6,8 +6,8 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./palindrom-editor.component.scss"]
 })
 export class PalindromEditorComponent implements OnInit {
-  lettersLeft = ["a", "b", "c", "d", "e"];
-  lettersRight = ["e", "d", "c", "b", "a"];
+  lettersLeft = ["a", "b","c", "d"];
+  lettersRight = ["d", "c", "b", "a"];
 
   constructor() {}
 
@@ -23,6 +23,7 @@ export class PalindromEditorComponent implements OnInit {
   // }
 
   moveFocus($event: { keyCode: number }) {
+    console.log("moveFocus")
     var code = $event.keyCode;
     var nextLetterBox;
     var previousLetterBox;
@@ -69,6 +70,8 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onLetterInputRight($event: { newLetter: string; letterIndex: number }) {
+    console.log("onLetterInputRight")
+
     let rightLetterIdx = $event.letterIndex;
     let leftLetterIdx = this.lettersRight.length - 1 - rightLetterIdx;
 
@@ -76,6 +79,8 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight[rightLetterIdx] = $event.newLetter;
   }
   onLetterInputLeft($event: { newLetter: string; letterIndex: number }) {
+    console.log("onLetterInputLeft")
+
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
 
@@ -83,6 +88,8 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight[rightLetterIdx] = $event.newLetter;
   }
   onLetterAddedRight($event: { newLetter: string; letterIndex: number }) {
+    console.log("onLetterAddedRight")
+
     let rightLetterIdx = $event.letterIndex;
     let leftLetterIdx = this.lettersRight.length - 1 - rightLetterIdx;
 
@@ -90,6 +97,7 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight.splice(rightLetterIdx + 1, 0, $event.newLetter);
   }
   onLetterAddedLeft($event: { newLetter: string; letterIndex: number }) {
+    console.log("onLetterAddedLeft")
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
 
@@ -98,15 +106,19 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onBackspaceLeft($event: { letterIndex: number }) {
+
     let leftLetterIdx = $event.letterIndex;
     let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
+    console.log("backspace index","left", leftLetterIdx, "right",rightLetterIdx);
 
     this.lettersLeft.splice(leftLetterIdx, 1);
     this.lettersRight.splice(rightLetterIdx, 1);
   }
   onBackspaceRight($event: { letterIndex: number }) {
     let rightLetterIdx = $event.letterIndex;
-    let leftLetterIdx = this.lettersRight.length - 1 - rightLetterIdx;
+    let leftLetterIdx = this.lettersLeft.length - 1 - rightLetterIdx;
+    console.log("backspace index", "right",rightLetterIdx, "left", leftLetterIdx )
+
 
     this.lettersLeft.splice(leftLetterIdx, 1);
     this.lettersRight.splice(rightLetterIdx, 1);
