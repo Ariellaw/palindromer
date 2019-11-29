@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { HtmlAstPath } from '@angular/compiler';
 
 @Component({
   selector: "app-palindrom-editor",
@@ -13,7 +14,10 @@ export class PalindromEditorComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    var pivotElement = document.getElementById("pivot-input") as HTMLElement;
+    pivotElement.focus();
+  }
   //TODO - move to another file
   //   isTextSelected(input) {
   //     if (typeof input.selectionStart === "number") {
