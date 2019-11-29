@@ -1,2 +1,2 @@
 
-<input [id]="side+index" class="letter-box" type="text" maxlength="2" [(ngModel)]="letter" size=1 (keyup)="onUserInput($event)"/>
+<div [id]="side+index" class="letter-box"  (input)="handleInput($event)" (keyup)="handleKeyup($event)" contenteditable="false" tabindex="0">{{character}} </div>

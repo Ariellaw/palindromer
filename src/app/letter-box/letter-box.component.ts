@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
+// import {InputEvent} from '@types/dom-inputevent';
 
 @Component({
   selector: "app-letter-box",
@@ -6,47 +7,52 @@ import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
   styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
-  id;
-  @Input() letter: string = "h";
+  @Input() character: string="";
   @Input() side: string = "";
   @Input() index: number; //TODO: should a letterbox be aware of its index? maybe there's another solution?
-  @Output() letterAdded = new EventEmitter<{newLetter:string; letterIndex: number;}>();
-  @Output() backspace = new EventEmitter<{ letterIndex: number }>();
-  @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
-  @Output() newLetter = new EventEmitter<{
-    newLetter: string;
+  @Output() characterChanged = new EventEmitter<{
+    character: string;
     letterIndex: number;
   }>();
+  @Output() backspace = new EventEmitter<{ letterIndex: number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode: number }>();
+  @Output() characterAdded = new EventEmitter<{
+    character: string;
+    letterIndex: number;
+  }>();
+  punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
+  lettersRegex = /^[A-Za-z]+$/;
   constructor() {}
 
   ngOnInit() {
-    console.log("test", this.letter, this.side, this.index)
+    // console.log("letterbox init test", this.character, this.side, this.index);
+    // this.character = "x";
   }
 
-  onUserInput(event: any) {
+  handleKeyup(event: any) {
+    var currText  =  event.target.innerText;
+    var newChar = event.key;
+
+
+    console.log("letterBoxhandleKeyup", event, newChar, currText);
     event.preventDefault();
-    var lettersRegex = /^[A-Za-z]+$/;
-    // console.log("newLetter", this.letter,"event", event, event.keyCode);
-    
-    if(event.keyCode===37 || event.keyCode===39){
-      this.moveFocus.emit({keyCode:event.keyCode});
-    }
-    else if (this.letter.length === 1 && this.letter.match(lettersRegex)) {
-      this.newLetter.emit({ newLetter: this.letter, letterIndex: this.index });
-    } else if(this.letter.length === 2 ){ 
-      this.letterAdded.emit({ newLetter: this.letter[1], letterIndex: this.index });
-      this.letter = this.letter[0];
+
+    if (event.keyCode === 37 || event.keyCode === 39) {
+      this.moveFocus.emit({ keyCode: event.keyCode });
     } else if (event.key === "Backspace") {
       this.backspace.emit({
         letterIndex: this.index
       });
+    } else if(newChar.match(this.lettersRegex) ){
+      this.characterAdded.emit({
+        character: newChar,
+        letterIndex: this.index
+      });
+
     }
   }
-}
 
-/*
-Backspaces
-punctionation
-spaces
-letters - letterChanged - letter
-*/
+}
+      //TODO: read about preventDefault()
+      //TODO: https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2
+      // console.log("firstLetter", this.character, typeof this.character)

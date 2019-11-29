@@ -6,8 +6,10 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./palindrom-editor.component.scss"]
 })
 export class PalindromEditorComponent implements OnInit {
-  lettersLeft = ["a", "b","c", "d"];
-  lettersRight = ["d", "c", "b", "a"];
+  lettersLeft = ["a", "b"];
+  lettersRight = ["b", "a"];
+  punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
+  lettersRegex = /^[A-Za-z]+$/;
 
   constructor() {}
 
@@ -23,7 +25,7 @@ export class PalindromEditorComponent implements OnInit {
   // }
 
   moveFocus($event: { keyCode: number }) {
-    console.log("moveFocus")
+    console.log("moveFocus");
     var code = $event.keyCode;
     var nextLetterBox;
     var previousLetterBox;
@@ -69,58 +71,76 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight.unshift($letter.newLetter);
   }
 
-  onLetterInputRight($event: { newLetter: string; letterIndex: number }) {
-    console.log("onLetterInputRight")
+  onLetterInputRight($event: { character: string; letterIndex: number }) {
+    console.log("onLetterInputRight");
 
-    let rightLetterIdx = $event.letterIndex;
-    let leftLetterIdx = this.lettersRight.length - 1 - rightLetterIdx;
+    let rightIdx = $event.letterIndex;
+    let leftIdx = this.lettersRight.length - 1 - rightIdx;
+    let character = $event.character;
 
-    this.lettersLeft[leftLetterIdx] = $event.newLetter;
-    this.lettersRight[rightLetterIdx] = $event.newLetter;
+    if (character.match(this.lettersRegex)) {
+      this.lettersLeft[leftIdx] = character;
+      this.lettersRight[rightIdx] = character;
+    } else if (character.match(this.punctionationRegex)) {
+      this.lettersLeft[leftIdx] = "";
+      this.lettersRight[rightIdx] = character;
+    }
   }
-  onLetterInputLeft($event: { newLetter: string; letterIndex: number }) {
-    console.log("onLetterInputLeft")
+  onLetterInputLeft($event: { character: string; letterIndex: number }) {
+    console.log("onLetterInputLeft");
 
-    let leftLetterIdx = $event.letterIndex;
-    let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
-
-    this.lettersLeft[leftLetterIdx] = $event.newLetter;
-    this.lettersRight[rightLetterIdx] = $event.newLetter;
+    let leftIdx = $event.letterIndex;
+    let rightIdx = this.lettersRight.length - 1 - leftIdx;
+    let character = $event.character;
+    if (character.match(this.lettersRegex)) {
+      this.lettersLeft[leftIdx] = character;
+      this.lettersRight[rightIdx] = character;
+    } else if (character.match(this.punctionationRegex)) {
+      this.lettersLeft[leftIdx] = character;
+      this.lettersRight[rightIdx] = "";
+    }
   }
-  onLetterAddedRight($event: { newLetter: string; letterIndex: number }) {
-    console.log("onLetterAddedRight")
+  onCharacterAddedRight($event: { character: string; letterIndex: number }) {
+    console.log("onCharacterAddedRight");
+    let rightIdx = $event.letterIndex;
+    let leftIdx = this.lettersRight.length - 1 - rightIdx;
+    let character = $event.character;
 
-    let rightLetterIdx = $event.letterIndex;
-    let leftLetterIdx = this.lettersRight.length - 1 - rightLetterIdx;
-
-    this.lettersLeft.splice(leftLetterIdx, 0, $event.newLetter);
-    this.lettersRight.splice(rightLetterIdx + 1, 0, $event.newLetter);
+    if (character.match(this.lettersRegex)) {
+      this.lettersLeft.splice(leftIdx, 0, $event.character);
+      this.lettersRight.splice(rightIdx + 1, 0, $event.character);
+    } else if (character.match(this.punctionationRegex)) {
+      this.lettersRight.splice(rightIdx + 1, 0, $event.character);
+    }
   }
-  onLetterAddedLeft($event: { newLetter: string; letterIndex: number }) {
-    console.log("onLetterAddedLeft")
-    let leftLetterIdx = $event.letterIndex;
-    let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
+  onCharacterAddedLeft($event: { character: string; letterIndex: number }) {
+    console.log("onCharacterAddedLeft");
+    let leftIdx = $event.letterIndex;
+    let rightIdx = this.lettersRight.length - 1 - leftIdx;
+    let character = $event.character;
 
-    this.lettersLeft.splice(leftLetterIdx + 1, 0, $event.newLetter);
-    this.lettersRight.splice(rightLetterIdx, 0, $event.newLetter);
+    if (character.match(this.lettersRegex)) {
+      this.lettersLeft.splice(leftIdx + 1, 0, character);
+      this.lettersRight.splice(rightIdx, 0, character);
+    } else if (character.match(this.punctionationRegex)) {
+      this.lettersLeft.splice(leftIdx + 1, 0, character);
+    }
   }
 
   onBackspaceLeft($event: { letterIndex: number }) {
+    let leftIdx = $event.letterIndex;
+    let rightIdx = this.lettersRight.length - 1 - leftIdx;
+    console.log("backspace index", "left", leftIdx, "right", rightIdx);
 
-    let leftLetterIdx = $event.letterIndex;
-    let rightLetterIdx = this.lettersRight.length - 1 - leftLetterIdx;
-    console.log("backspace index","left", leftLetterIdx, "right",rightLetterIdx);
-
-    this.lettersLeft.splice(leftLetterIdx, 1);
-    this.lettersRight.splice(rightLetterIdx, 1);
+    this.lettersLeft.splice(leftIdx, 1);
+    this.lettersRight.splice(rightIdx, 1);
   }
   onBackspaceRight($event: { letterIndex: number }) {
-    let rightLetterIdx = $event.letterIndex;
-    let leftLetterIdx = this.lettersLeft.length - 1 - rightLetterIdx;
-    console.log("backspace index", "right",rightLetterIdx, "left", leftLetterIdx )
+    let rightIdx = $event.letterIndex;
+    let leftIdx = this.lettersLeft.length - 1 - rightIdx;
+    console.log("backspace index", "right", rightIdx, "left", leftIdx);
 
-
-    this.lettersLeft.splice(leftLetterIdx, 1);
-    this.lettersRight.splice(rightLetterIdx, 1);
+    this.lettersLeft.splice(leftIdx, 1);
+    this.lettersRight.splice(rightIdx, 1);
   }
 }
