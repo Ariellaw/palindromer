@@ -34,7 +34,7 @@ export class LetterBoxComponent implements OnInit {
     var newChar = event.key;
 
 
-    console.log("letterBoxhandleKeyup", event, newChar, currText);
+    console.log("letterBoxhandleKeyup event", event,"new Char", newChar, "current text", currText);
     event.preventDefault();
 
     if (event.keyCode === 37 || event.keyCode === 39) {
@@ -49,6 +49,9 @@ export class LetterBoxComponent implements OnInit {
         letterIndex: this.index
       });
 
+    }else {
+      console.log("nothing");
+      return;
     }
   }
 
@@ -56,3 +59,7 @@ export class LetterBoxComponent implements OnInit {
       //TODO: read about preventDefault()
       //TODO: https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2
       // console.log("firstLetter", this.character, typeof this.character)
+      //TODO - move focus after backspace -to the previos element
+      //fix CSS
+      //support for punctation and spaces
+      // add to github pages

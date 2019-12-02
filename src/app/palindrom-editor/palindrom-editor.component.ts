@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { HtmlAstPath } from '@angular/compiler';
+import { HtmlAstPath } from "@angular/compiler";
 
 @Component({
   selector: "app-palindrom-editor",
@@ -11,12 +11,14 @@ export class PalindromEditorComponent implements OnInit {
   lettersRight = ["b", "a"];
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   lettersRegex = /^[A-Za-z]+$/;
+  pivotElement:HTMLElement;
 
   constructor() {}
 
   ngOnInit() {
-    var pivotElement = document.getElementById("pivot-input") as HTMLElement;
-    pivotElement.focus();
+    this.pivotElement = document.getElementById("pivot-input") as HTMLElement;
+
+    this.pivotElement.focus();
   }
   //TODO - move to another file
   //   isTextSelected(input) {
@@ -132,6 +134,26 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onBackspaceLeft($event: { letterIndex: number }) {
+    var focusedElement = window.document.activeElement;
+    var nextElement = focusedElement.parentNode.nextSibling;
+    var previousElement = focusedElement.parentNode.previousSibling;
+
+    if (
+      previousElement.nodeName === "APP-LETTER-BOX" &&
+      previousElement.childNodes[0]
+    ) {
+      var previousLetterBox = previousElement.childNodes[0] as HTMLElement;
+      previousLetterBox.focus();
+    } else if (
+      nextElement.nodeName === "APP-LETTER-BOX" &&
+      nextElement.childNodes[0]
+    ) {
+      var nextLetterBox = nextElement.childNodes[0] as HTMLElement;
+      nextLetterBox.focus();
+    }else{
+      this.pivotElement.focus()
+    }
+
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersRight.length - 1 - leftIdx;
     console.log("backspace index", "left", leftIdx, "right", rightIdx);
@@ -140,6 +162,26 @@ export class PalindromEditorComponent implements OnInit {
     this.lettersRight.splice(rightIdx, 1);
   }
   onBackspaceRight($event: { letterIndex: number }) {
+    var focusedElement = window.document.activeElement;
+    var nextElement = focusedElement.parentNode.nextSibling;
+    var previousElement = focusedElement.parentNode.previousSibling;
+
+    if (
+      nextElement && nextElement.nodeName === "APP-LETTER-BOX" &&
+      nextElement.childNodes[0]
+    ) {
+      var nextLetterBox = nextElement.childNodes[0] as HTMLElement;
+      nextLetterBox.focus();
+    } else if (
+      previousElement.nodeName === "APP-LETTER-BOX" &&
+      previousElement.childNodes[0]
+    ) {
+      var previousLetterBox = previousElement.childNodes[0] as HTMLElement;
+      previousLetterBox.focus();
+    } else {
+      this.pivotElement.focus();
+    }
+
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersLeft.length - 1 - rightIdx;
     console.log("backspace index", "right", rightIdx, "left", leftIdx);
