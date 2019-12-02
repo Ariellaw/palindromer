@@ -43,7 +43,8 @@ export class LetterBoxComponent implements OnInit {
       this.backspace.emit({
         letterIndex: this.index
       });
-    } else if(newChar.match(this.lettersRegex) ){
+    } else if(newChar.match(this.lettersRegex) && newChar.length === 1){
+      console.log("new char matched letter regex", newChar);
       this.characterAdded.emit({
         character: newChar,
         letterIndex: this.index
