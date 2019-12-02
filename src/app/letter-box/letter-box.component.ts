@@ -36,21 +36,26 @@ export class LetterBoxComponent implements OnInit {
 
     console.log("letterBoxhandleKeyup event", event,"new Char", newChar, "current text", currText);
     event.preventDefault();
-
-    if (event.keyCode === 37 || event.keyCode === 39) {
+    if(newChar === "Shift"){ 
+      console.log("shift")
+      return;
+  } else if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode });
     } else if (event.key === "Backspace") {
       this.backspace.emit({
         letterIndex: this.index
       });
-    } else if(newChar.match(this.lettersRegex) && newChar.length === 1){
+    } else if (
+      (newChar.match(this.lettersRegex) && newChar.length === 1) ||
+      (newChar.match(this.punctionationRegex) && newChar.length === 1) ||
+      newChar === " "
+    ) {
       console.log("new char matched letter regex", newChar);
       this.characterAdded.emit({
         character: newChar,
         letterIndex: this.index
       });
-
-    }else {
+    } else {
       console.log("nothing");
       return;
     }
