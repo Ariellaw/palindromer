@@ -11,7 +11,7 @@ export class PalindromEditorComponent implements OnInit {
   lettersRight = ["b", "a"];
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   lettersRegex = /^[A-Za-z]+$/;
-  pivotElement:HTMLElement;
+  pivotElement: HTMLElement;
 
   constructor() {}
 
@@ -37,7 +37,7 @@ export class PalindromEditorComponent implements OnInit {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
-  
+
     if (nextElement && code === 39) {
       if (
         nextElement.nodeName !== "APP-LETTER-BOX" &&
@@ -133,7 +133,7 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
 
-  onBackspaceLeft($event: { letterIndex: number; character: string;}) {
+  onBackspaceLeft($event: { letterIndex: number; character: string }) {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
@@ -150,52 +150,78 @@ export class PalindromEditorComponent implements OnInit {
     ) {
       var nextLetterBox = nextElement.childNodes[0] as HTMLElement;
       nextLetterBox.focus();
-    }else{
-      this.pivotElement.focus()
+    } else {
+      this.pivotElement.focus();
     }
 
     let leftIdx = $event.letterIndex;
-    let rightIdx = this.lettersRight.length - 1 - leftIdx;
+    let deletedLetter = $event.character;
+    let actualLetterIdx = 0;
 
-    if($event.character.match(this.lettersRegex)){
-      this.lettersLeft.splice(leftIdx, 1);
-      this.lettersRight.splice(rightIdx, 1);
-    }else{
-      this.lettersLeft.splice(leftIdx, 1);
+    if (deletedLetter.match(this.lettersRegex)) {
+      for (var i = 0; i <= leftIdx; i++) {
+        if (this.lettersLeft[i] === deletedLetter) {
+          actualLetterIdx++;
+        }
+      }
+      for (var i = this.lettersRight.length - 1; i >= 0; i--) {
+        if (this.lettersRight[i] === deletedLetter && actualLetterIdx > 1) {
+          actualLetterIdx--;
+        } else if (
+          this.lettersRight[i] === deletedLetter &&
+          actualLetterIdx === 1
+        ) {
+          this.lettersRight.splice(i, 1);
+          break;
+        }
+      }
     }
-
+    this.lettersLeft.splice(leftIdx, 1);
   }
-  onBackspaceRight($event: { letterIndex: number; character:string }) {
+  onBackspaceRight($event: { letterIndex: number; character: string }) {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
 
     if (
-      nextElement && nextElement.nodeName === "APP-LETTER-BOX" &&
-      nextElement.childNodes[0]
-    ) {
-      var nextLetterBox = nextElement.childNodes[0] as HTMLElement;
-      nextLetterBox.focus();
-    } else if (
       previousElement.nodeName === "APP-LETTER-BOX" &&
       previousElement.childNodes[0]
     ) {
       var previousLetterBox = previousElement.childNodes[0] as HTMLElement;
       previousLetterBox.focus();
+    } else if (
+      nextElement &&
+      nextElement.nodeName === "APP-LETTER-BOX" &&
+      nextElement.childNodes[0]
+    ) {
+      var nextLetterBox = nextElement.childNodes[0] as HTMLElement;
+      nextLetterBox.focus();
     } else {
       this.pivotElement.focus();
     }
 
     let rightIdx = $event.letterIndex;
-    let leftIdx = this.lettersLeft.length - 1 - rightIdx;
+    let deletedLetter = $event.character;
+    let actualLetterIdx = 0;
 
-    if($event.character.match(this.lettersRegex)){
-      this.lettersLeft.splice(leftIdx, 1);
-      this.lettersRight.splice(rightIdx, 1);
-    } else{
-      this.lettersRight.splice(rightIdx, 1);
+    if (deletedLetter.match(this.lettersRegex)) {
+      for (var i = 0; i <= rightIdx; i++) {
+        if (this.lettersRight[i] === deletedLetter) {
+          actualLetterIdx++;
+        }
+      }
+      for (var i = this.lettersLeft.length - 1; i >= 0; i--) {
+        if (this.lettersLeft[i] === deletedLetter && actualLetterIdx > 1) {
+          actualLetterIdx--;
+        } else if (
+          this.lettersLeft[i] === deletedLetter &&
+          actualLetterIdx === 1
+        ) {
+          this.lettersLeft.splice(i, 1);
+          break;
+        }
+      }
     }
-
-
+    this.lettersRight.splice(rightIdx, 1);
   }
 }

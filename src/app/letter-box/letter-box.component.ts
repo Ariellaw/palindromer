@@ -33,8 +33,6 @@ export class LetterBoxComponent implements OnInit {
     var currText  =  event.target.innerText;
     var newChar = event.key;
 
-
-    console.log("letterBoxhandleKeyup event", event,"new Char", newChar, "current text", currText);
     event.preventDefault();
     if(newChar === "Shift"){ 
       console.log("shift")
@@ -66,7 +64,6 @@ export class LetterBoxComponent implements OnInit {
 }
       //TODO: read about preventDefault()
       //TODO: https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2
-      // console.log("firstLetter", this.character, typeof this.character)
       //fix CSS
       //support for punctation and spaces
       //Support for deleting puncuation

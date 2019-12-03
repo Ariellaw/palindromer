@@ -16,6 +16,9 @@ export class PivotLetterComponent implements OnInit {
 
   ngOnInit() {}
 
+  expand(){
+    this.pivotIsCollapsed = false;
+  }
   onUserInput(event: KeyboardEvent) {
     var lettersRegex = /^[A-Za-z]+$/;
     var isOneCharacter = this.input.length===1;
