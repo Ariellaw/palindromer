@@ -17,7 +17,6 @@ export class PalindromEditorComponent implements OnInit {
 
   ngOnInit() {
     this.pivotElement = document.getElementById("pivot-input") as HTMLElement;
-
     this.pivotElement.focus();
   }
   //TODO - move to another file
@@ -38,6 +37,7 @@ export class PalindromEditorComponent implements OnInit {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
+  
     if (nextElement && code === 39) {
       if (
         nextElement.nodeName !== "APP-LETTER-BOX" &&
@@ -133,7 +133,7 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
 
-  onBackspaceLeft($event: { letterIndex: number }) {
+  onBackspaceLeft($event: { letterIndex: number; character: string;}) {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
@@ -156,12 +156,16 @@ export class PalindromEditorComponent implements OnInit {
 
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersRight.length - 1 - leftIdx;
-    console.log("backspace index", "left", leftIdx, "right", rightIdx);
 
-    this.lettersLeft.splice(leftIdx, 1);
-    this.lettersRight.splice(rightIdx, 1);
+    if($event.character.match(this.lettersRegex)){
+      this.lettersLeft.splice(leftIdx, 1);
+      this.lettersRight.splice(rightIdx, 1);
+    }else{
+      this.lettersLeft.splice(leftIdx, 1);
+    }
+
   }
-  onBackspaceRight($event: { letterIndex: number }) {
+  onBackspaceRight($event: { letterIndex: number; character:string }) {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
     var previousElement = focusedElement.parentNode.previousSibling;
@@ -184,9 +188,14 @@ export class PalindromEditorComponent implements OnInit {
 
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersLeft.length - 1 - rightIdx;
-    console.log("backspace index", "right", rightIdx, "left", leftIdx);
 
-    this.lettersLeft.splice(leftIdx, 1);
-    this.lettersRight.splice(rightIdx, 1);
+    if($event.character.match(this.lettersRegex)){
+      this.lettersLeft.splice(leftIdx, 1);
+      this.lettersRight.splice(rightIdx, 1);
+    } else{
+      this.lettersRight.splice(rightIdx, 1);
+    }
+
+
   }
 }

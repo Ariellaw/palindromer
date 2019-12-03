@@ -14,7 +14,7 @@ export class LetterBoxComponent implements OnInit {
     character: string;
     letterIndex: number;
   }>();
-  @Output() backspace = new EventEmitter<{ letterIndex: number }>();
+  @Output() backspace = new EventEmitter<{ letterIndex: number; character: string;}>();
   @Output() moveFocus = new EventEmitter<{ keyCode: number }>();
   @Output() characterAdded = new EventEmitter<{
     character: string;
@@ -43,7 +43,9 @@ export class LetterBoxComponent implements OnInit {
       this.moveFocus.emit({ keyCode: event.keyCode });
     } else if (event.key === "Backspace") {
       this.backspace.emit({
-        letterIndex: this.index
+        letterIndex: this.index,
+        character: this.character
+
       });
     } else if (
       (newChar.match(this.lettersRegex) && newChar.length === 1) ||
@@ -65,7 +67,8 @@ export class LetterBoxComponent implements OnInit {
       //TODO: read about preventDefault()
       //TODO: https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2
       // console.log("firstLetter", this.character, typeof this.character)
-      //TODO - move focus after backspace -to the previos element
       //fix CSS
       //support for punctation and spaces
+      //Support for deleting puncuation
+      //collapse pivot:
       // add to github pages
