@@ -3,9 +3,6 @@
     border-radius: 9px;
     font-size: 20px;
     border: 4px solid blue;
-    padding: 5px;
-    width: 35px;
-    height: 35px;
     text-align: center;
     margin-right: 5px;
     margin-bottom:5px;
@@ -19,3 +16,15 @@
     }
 }
 
+.expanded{
+    width: 35px;
+    height: 35px;
+    padding: 5px;
+}
+
+.collapsed{
+    width: 0px;
+    height: 60px;
+    padding: 0px;
+    border-color:black
+}

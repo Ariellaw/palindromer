@@ -10,6 +10,7 @@ export class PivotLetterComponent implements OnInit {
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
   @Output() backspace = new EventEmitter();
   @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
+  pivotIsCollapsed=false;
 
   constructor() {}
 
@@ -25,9 +26,9 @@ export class PivotLetterComponent implements OnInit {
       event.preventDefault();
       return;
     }
-    // else if(event.key === "Backspace"){
-    //   this.backspace.emit();
-    // }
+    else if(event.key === "Backspace"){
+      this.pivotIsCollapsed = true;
+    }
     else if(this.input.length===2){
       var newCharacter= this.input.charAt(0);
       if(newCharacter.match(lettersRegex)){
