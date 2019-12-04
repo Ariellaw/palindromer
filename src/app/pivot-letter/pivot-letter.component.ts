@@ -10,27 +10,31 @@ export class PivotLetterComponent implements OnInit {
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
   @Output() backspace = new EventEmitter();
   @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
-  pivotIsCollapsed=false;
+  pivotIsCollapsed = false;
+  
 
   constructor() {}
 
   ngOnInit() {}
 
   expand(){
+    console.log("expand");
     this.pivotIsCollapsed = false;
   }
   onUserInput(event: KeyboardEvent) {
+
+    this.pivotIsCollapsed = false;
     var lettersRegex = /^[A-Za-z]+$/;
     var isOneCharacter = this.input.length===1;
     if(event.keyCode===37 || event.keyCode===39){
       this.moveFocus.emit({keyCode:event.keyCode});
     }
-    else if(isOneCharacter){
+    else if(event.keyCode ===  8 || event.keyCode === 46){
+      this.pivotIsCollapsed = true;
+    }   
+  else if(isOneCharacter){
       event.preventDefault();
       return;
-    }
-    else if(event.key === "Backspace"){
-      this.pivotIsCollapsed = true;
     }
     else if(this.input.length===2){
       var newCharacter= this.input.charAt(0);

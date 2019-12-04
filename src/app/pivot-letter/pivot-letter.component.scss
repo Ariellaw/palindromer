@@ -20,11 +20,15 @@
     width: 35px;
     height: 35px;
     padding: 5px;
+    cursor: text;
+
 }
 
 .collapsed{
     width: 0px;
     height: 60px;
     padding: 0px;
-    border-color:black
+    border-color:black;
+    cursor: pointer;
 }
+

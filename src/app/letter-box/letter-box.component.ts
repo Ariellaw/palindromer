@@ -35,7 +35,6 @@ export class LetterBoxComponent implements OnInit {
 
     event.preventDefault();
     if(newChar === "Shift"){ 
-      console.log("shift")
       return;
   } else if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode });
@@ -50,13 +49,11 @@ export class LetterBoxComponent implements OnInit {
       (newChar.match(this.punctionationRegex) && newChar.length === 1) ||
       newChar === " "
     ) {
-      console.log("new char matched letter regex", newChar);
       this.characterAdded.emit({
         character: newChar,
         letterIndex: this.index
       });
     } else {
-      console.log("nothing");
       return;
     }
   }
