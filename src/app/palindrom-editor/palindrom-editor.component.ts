@@ -41,7 +41,13 @@ export class PalindromEditorComponent implements OnInit {
   deleteLastLetterLeft(){
     let character =this.lettersLeft[this.lettersLeft.length-1];
     if(this.lettersLeft.length>0){
-      this.onBackspaceLeft({letterIndex:this.lettersLeft.length-1, character})g
+      this.onBackspaceLeft({letterIndex:this.lettersLeft.length-1, character})
+    }
+  }
+  deleteLastLetterRight(){
+    let character =this.lettersRight[0];
+    if(this.lettersRight.length>0){
+      this.onBackspaceRight({letterIndex:0, character})
     }
   }
   moveFocusRight() {
@@ -118,7 +124,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onLetterInputRight($event: { character: string; letterIndex: number }) {
-    console.log("onLetterInputRight");
 
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
@@ -133,7 +138,6 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   onLetterInputLeft($event: { character: string; letterIndex: number }) {
-    console.log("onLetterInputLeft");
 
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersRight.length - 1 - leftIdx;
@@ -148,7 +152,6 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   onCharacterAddedRight($event: { character: string; letterIndex: number }) {
-    console.log("onCharacterAddedRight");
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
@@ -161,7 +164,6 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   onCharacterAddedLeft($event: { character: string; letterIndex: number }) {
-    console.log("onCharacterAddedLeft");
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersRight.length - 1 - leftIdx;
     let character = $event.character;
@@ -218,7 +220,9 @@ export class PalindromEditorComponent implements OnInit {
     );
     var nextElement = this.nextElementIsLetterBox(focusedElement.parentNode, this.letterBoxElement);
 
-    if (previousElement) {
+    if($event.letterIndex === 0){
+      this.pivotElement.focus();
+    } else if (previousElement) {
       this.focusOnElement(previousElement);
     } else if (nextElement) {
       this.focusOnElement(nextElement);

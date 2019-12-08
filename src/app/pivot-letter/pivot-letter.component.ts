@@ -11,13 +11,13 @@ export class PivotLetterComponent implements OnInit {
   @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
   pivotIsCollapsed = false;
   @Output() backspace = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();
 
   constructor() {}
 
   ngOnInit() {}
 
   expand(){
-    console.log("expand");
     this.pivotIsCollapsed = false;
   }
   onUserInput(event: KeyboardEvent) {
@@ -36,7 +36,8 @@ export class PivotLetterComponent implements OnInit {
 
        }else{
         if(event.keyCode ===  46){
-         console.log('46')
+          this.delete.emit();
+
         }
        }
      }
