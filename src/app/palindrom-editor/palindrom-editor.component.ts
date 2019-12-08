@@ -38,6 +38,12 @@ export class PalindromEditorComponent implements OnInit {
       this.moveFocusLeft();
     }
   }
+  deleteLastLetterLeft(){
+    let character =this.lettersLeft[this.lettersLeft.length-1];
+    if(this.lettersLeft.length>0){
+      this.onBackspaceLeft({letterIndex:this.lettersLeft.length-1, character})g
+    }
+  }
   moveFocusRight() {
     var focusedElement = window.document.activeElement;
     var nextElement = focusedElement.parentNode.nextSibling;
@@ -175,8 +181,9 @@ export class PalindromEditorComponent implements OnInit {
       this.letterBoxElement
     );
     var nextElement = this.nextElementIsLetterBox(focusedElement.parentNode, this.letterBoxElement);
-
-    if (previousElement) {
+    if($event.letterIndex === this.lettersLeft.length-1){
+      this.pivotElement.focus();
+    } else if (previousElement) {
       this.focusOnElement(previousElement);
     } else if (nextElement) {
       this.focusOnElement(nextElement);

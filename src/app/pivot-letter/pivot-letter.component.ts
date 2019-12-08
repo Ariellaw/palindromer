@@ -8,10 +8,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 export class PivotLetterComponent implements OnInit {
   input: string = "a";
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
-  @Output() backspace = new EventEmitter();
   @Output() moveFocus = new EventEmitter<{ keyCode:number}>();
   pivotIsCollapsed = false;
-  
+  @Output() backspace = new EventEmitter<void>();
 
   constructor() {}
 
@@ -23,20 +22,33 @@ export class PivotLetterComponent implements OnInit {
   }
   onUserInput(event: KeyboardEvent) {
 
-    this.pivotIsCollapsed = false;
     var lettersRegex = /^[A-Za-z]+$/;
     var isOneCharacter = this.input.length===1;
     if(event.keyCode===37 || event.keyCode===39){
       this.moveFocus.emit({keyCode:event.keyCode});
     }
     else if(event.keyCode ===  8 || event.keyCode === 46){
+     if(!this.pivotIsCollapsed){
       this.pivotIsCollapsed = true;
+     }else{
+       if(event.keyCode ===  8){
+         this.backspace.emit();
+
+       }else{
+        if(event.keyCode ===  46){
+         console.log('46')
+        }
+       }
+     }
+      
     }   
   else if(isOneCharacter){
+    this.pivotIsCollapsed = false;
       event.preventDefault();
       return;
     }
     else if(this.input.length===2){
+      this.pivotIsCollapsed = false;
       var newCharacter= this.input.charAt(0);
       if(newCharacter.match(lettersRegex)){
         this.newUserInput.emit({

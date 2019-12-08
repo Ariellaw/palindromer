@@ -1,7 +1,7 @@
 <div class="palindrom-container" id="palindrom-container">
     <app-letter-box (moveFocus)="moveFocus($event)"   (backspace)="onBackspaceLeft($event)" *ngFor="let currLetter of lettersLeft ; let i = index"
      side="left"   [character]="currLetter" [index]="i" (characterAdded)="onCharacterAddedLeft($event)" (characterChanged)="onLetterInputLeft($event)"></app-letter-box>
-    <app-pivot-letter (moveFocus)="moveFocus($event)"  (backspace)="deleteLastLetter()" (newUserInput)="onPivotChanged($event)"></app-pivot-letter>
+    <app-pivot-letter (moveFocus)="moveFocus($event)"  (backspace)="deleteLastLetterLeft()" (newUserInput)="onPivotChanged($event)"></app-pivot-letter>
     <app-letter-box (moveFocus)="moveFocus($event)"  (backspace)="onBackspaceRight($event)" *ngFor="let currLetter of lettersRight; let i = index"
     side="right" [character]="currLetter" [index]="i" (characterAdded)="onCharacterAddedRight($event)" (characterChanged)="onLetterInputRight($event)"></app-letter-box>
 
