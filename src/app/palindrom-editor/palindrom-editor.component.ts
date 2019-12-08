@@ -10,7 +10,7 @@ export class PalindromEditorComponent implements OnInit {
   lettersLeft = ["a", "b"];
   lettersRight = ["b", "a"];
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
-  lettersRegex = /^[A-Za-z]+$/;
+  lettersRegex = /^[A-Za-zא-ת]+$/;
   pivotElement: HTMLElement;
   letterBoxElement = "APP-LETTER-BOX";
   pivotElementNodeName = "APP-PIVOT-LETTER";

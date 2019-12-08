@@ -1,13 +1,11 @@
 .letter-box{
     font-weight: bold;
-    border-radius: 9px;
-    font-size: 20px;
-    border: 3px solid red;
-    padding: 5px;
-    width: 30px;
+    border-radius: 4px;
+    font-size: 25px;
+    // padding: 5px;
     height: 30px;
     text-align: center;
-    margin-right: 5px;
+    margin-right: 3px;
     margin-bottom:5px;
     display: inline-block;  
     color: transparent;
@@ -20,4 +18,23 @@
     }
 }
 
+.punctuation{
+    width: 20px;
+    border-bottom: 3px solid yellow;
+    margin-right: 3px;
+    margin-left:0px;
 
+}
+.space{
+    width: 10px;
+    border-bottom: 3px solid green;
+    margin-right: 0px;
+    margin-left:0px;
+}
+
+.letter{
+    width: 20px;
+    border-bottom: 3px solid red;
+    margin-right: 3px;
+    margin-left:0px;
+}

@@ -1,2 +1,2 @@
 
-<div [id]="side+index" class="letter-box"  (input)="handleInput($event)" (keyup)="handleKeyup($event)" contenteditable="false" tabindex="0">{{character}} </div>
+<div [ngClass]="{'space':typeOfChar==='space', 'punctuation':typeOfChar==='punctuation', 'letter': typeOfChar==='letter'}" [id]="side+index" class="letter-box"  (input)="handleInput($event)" (keyup)="handleKeyup($event)" contenteditable="false" tabindex="0">{{character}} </div>
