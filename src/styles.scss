@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    height: 100000px;
+    // height: 100vh;
+    // overflow-y: hidden;
+    position: fixed;
+}
+
+
+html{
+    background-color: lightblue;
+}

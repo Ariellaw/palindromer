@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
+import { type } from 'os';
 // import {InputEvent} from '@types/dom-inputevent';
 
 @Component({
@@ -31,18 +32,16 @@ export class LetterBoxComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log("this.character", this.character)
     this.assignCharacterType();
   }
   isLetterVerification(character){
     return character.match(this.latinLettersRegex) || character.match(this.hebrewLettersRegex);
   }
 
-  handleKeyup(event: any) {
-    var currText = event.target.innerText;
-    var newChar = event.key;
-
+  handleKeyup(event: KeyboardEvent) {
     event.preventDefault();
+    // var currText = event.target.innerText;
+    var newChar = event.key;
     if (newChar === "Shift") {
       return;
     } else if (event.keyCode === 37 || event.keyCode === 39) {
@@ -52,19 +51,19 @@ export class LetterBoxComponent implements OnInit {
         letterIndex: this.index,
         character: this.character
       });
-    } else if (
-      (newChar.match(this.latinLettersRegex) && newChar.length === 1) ||
-      (newChar.match(this.punctionationRegex) && newChar.length === 1) ||
-      newChar === " "
-    ) {
+    } else
+    //  if (
+    //   (newChar.match(this.latinLettersRegex) && newChar.length === 1) ||
+    //   (newChar.match(this.punctionationRegex) && newChar.length === 1) ||
+    //   newChar === " "
+    // )
+     {
       this.assignCharacterType();
       this.characterAdded.emit({
         character: newChar,
         letterIndex: this.index
       });
-    } else {
-      return;
-    }
+    } 
   }
 
   assignCharacterType() {
@@ -76,7 +75,6 @@ export class LetterBoxComponent implements OnInit {
     } else {
       this.typeOfChar = "punctuation";
     }
-    console.log(" this.typeOfChar",  this.typeOfChar)
   }
 }
 //TODO: read about preventDefault()

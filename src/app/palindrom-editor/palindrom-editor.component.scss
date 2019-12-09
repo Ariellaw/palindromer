@@ -1,7 +1,8 @@
 .palindrom-container{
     width:80vw;
     padding:50px;
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 
