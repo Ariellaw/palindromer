@@ -24,7 +24,8 @@ export class LetterBoxComponent implements OnInit {
     letterIndex: number;
   }>();
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
-  lettersRegex = /^[A-Za-z]+$/;
+  latinLettersRegex = /^[A-Za-z]+$/;
+  hebrewLettersRegex = "^[א-ת]+$";
   typeOfChar: string = "letter";
 
   constructor() {}
@@ -32,6 +33,9 @@ export class LetterBoxComponent implements OnInit {
   ngOnInit() {
     console.log("this.character", this.character)
     this.assignCharacterType();
+  }
+  isLetterVerification(character){
+    return character.match(this.latinLettersRegex) || character.match(this.hebrewLettersRegex);
   }
 
   handleKeyup(event: any) {
@@ -49,7 +53,7 @@ export class LetterBoxComponent implements OnInit {
         character: this.character
       });
     } else if (
-      (newChar.match(this.lettersRegex) && newChar.length === 1) ||
+      (newChar.match(this.latinLettersRegex) && newChar.length === 1) ||
       (newChar.match(this.punctionationRegex) && newChar.length === 1) ||
       newChar === " "
     ) {
@@ -64,7 +68,8 @@ export class LetterBoxComponent implements OnInit {
   }
 
   assignCharacterType() {
-    if (this.character.match(this.lettersRegex)) {
+   var isLetter = this.isLetterVerification(this.character)
+    if (isLetter) {
       this.typeOfChar = "letter";
     } else if (this.character === " ") {
       this.typeOfChar = "space";
