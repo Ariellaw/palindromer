@@ -1,7 +1,23 @@
-.main-container{
-    // width:90vw;
-    // border:1px solid black;
-    height: 100vh;
-    width:100%;
-    text-align: center;
+.main-container {
+  // width:90vw;
+  // border:1px solid black;
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+}
+
+.navbar {
+  background-color: #e4cb7d;
+  height: 10rem;
+  width: 100vw;
+  border-bottom: 3px solid #7dd3e4;
+  h1 {
+    margin: 0 10px 0 10px;
+    font: bold 24px/30px Georgia, "Times New Roman", Times, serif;
+    color: #694f10;
+    cursor: pointer;
+  }
+}
+.title {
+
 }

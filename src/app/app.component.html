@@ -1,3 +1,9 @@
-<div class=main-container>
+<div class=main-container [ngClass]="{'rtl':rightToLeft}">
+    <nav class="navbar">
+            <h1 class="title">Palindromes Generator</h1>
+            <h1 *ngIf="rightToLeft" (click)="rightToLeft=false">אנגלית</h1>
+            <h1 *ngIf="!rightToLeft" (click)="rightToLeft=true">Hebrew</h1>
+            <h1>Save</h1>
+    </nav>
     <app-palindrom-editor></app-palindrom-editor>
 </div>

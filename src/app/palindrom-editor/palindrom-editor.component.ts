@@ -7,15 +7,14 @@ import { HtmlAstPath } from "@angular/compiler";
   styleUrls: ["./palindrom-editor.component.scss"]
 })
 export class PalindromEditorComponent implements OnInit {
-  lettersLeft = ["ל","ב","א","ב","."];
-  lettersRight = ["ל",".","ב","א","ב"];
+  lettersLeft = [];
+  lettersRight = [];
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
   pivotElement: HTMLElement;
   letterBoxElement = "APP-LETTER-BOX";
   pivotElementNodeName = "APP-PIVOT-LETTER";
-  rightToLeft="false";
   constructor() {}
   // באב. ליל באב.
   ngOnInit() {
@@ -240,7 +239,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   addOrDeleteCharacter(arr1, arr2, newChar, idx1, idx2, toDelete) {
-    console.log(arr1, arr2, newChar, idx1, idx2, toDelete)
     if(newChar){
       var isLetter = this.isLetterVerification(newChar);
     }
