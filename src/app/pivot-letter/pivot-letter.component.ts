@@ -21,8 +21,8 @@ export class PivotLetterComponent implements OnInit {
     this.pivotIsCollapsed = false;
   }
   onUserInput(event: KeyboardEvent) {
-    var lettersRegex = /^[A-Za-z]+$/;
     var isOneCharacter = this.input.length === 1;
+    
     if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode });
     } else if (event.keyCode === 8 || event.keyCode === 46) {
@@ -42,7 +42,6 @@ export class PivotLetterComponent implements OnInit {
       event.preventDefault();
       return;
     } else if (this.input.length === 2) {
-      this.pivotIsCollapsed = false;
       var newCharacter = this.input.charAt(0);
       this.newUserInput.emit({
         newLetter: newCharacter
