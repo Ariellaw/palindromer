@@ -19,7 +19,7 @@ export class LetterBoxComponent implements OnInit {
     letterIndex: number;
     character: string;
   }>();
-  @Output() moveFocus = new EventEmitter<{ keyCode: number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:string, letterIdx:number }>();
   @Output() characterAdded = new EventEmitter<{
     character: string;
     letterIndex: number;
@@ -49,7 +49,7 @@ export class LetterBoxComponent implements OnInit {
     var newChar = event.key;
 
     if (event.keyCode === 37 || event.keyCode === 39) {
-      this.moveFocus.emit({ keyCode: event.keyCode });
+      this.moveFocus.emit({ keyCode: event.keyCode, side:this.side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
       this.backspace.emit({
         letterIndex: this.index,

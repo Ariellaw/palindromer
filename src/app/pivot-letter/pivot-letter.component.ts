@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 export class PivotLetterComponent implements OnInit {
   input: string = "o";
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
-  @Output() moveFocus = new EventEmitter<{ keyCode: number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:string, letterIdx:number }>();
   pivotIsCollapsed = false;
   @Output() backspace = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
@@ -24,7 +24,7 @@ export class PivotLetterComponent implements OnInit {
     var isOneCharacter = this.input.length === 1;
     
     if (event.keyCode === 37 || event.keyCode === 39) {
-      this.moveFocus.emit({ keyCode: event.keyCode });
+      this.moveFocus.emit({ keyCode: event.keyCode, side:"pivot-input", letterIdx:-1});
     } else if (event.keyCode === 8 || event.keyCode === 46) {
       if (!this.pivotIsCollapsed) {
         this.pivotIsCollapsed = true;
