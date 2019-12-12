@@ -24,7 +24,8 @@ export class LetterBoxComponent implements OnInit {
     character: string;
     letterIndex: number;
   }>();
-  @Output() delete = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<{letterIndex: number; character: string;}>();
+
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
@@ -55,7 +56,10 @@ export class LetterBoxComponent implements OnInit {
         character: this.character
       });
     }else if(event.keyCode === 46){
-      this.delete.emit();
+      this.delete.emit({
+        letterIndex: this.index,
+        character: this.character
+      });
     } else if (newChar.length > 1) {
       return;
     } else {

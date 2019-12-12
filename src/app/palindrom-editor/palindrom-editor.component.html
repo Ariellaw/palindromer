@@ -3,13 +3,13 @@
     <div class="palindrom-container" id="palindrom-container">
         <app-letter-box (moveFocus)="moveFocus($event)" (backspace)="onBackspaceLeft($event)"
             *ngFor="let currLetter of lettersLeft ; let i = index" side="left" [character]="currLetter" [index]="i"
-            (characterAdded)="onCharacterAddedLeft($event)" (characterChanged)="onLetterInputLeft($event)">
+            (characterAdded)="onAddCharLeft($event)" (characterChanged)="onLetterInputLeft($event)" (delete)="deleteLeft()">
         </app-letter-box>
         <app-pivot-letter (moveFocus)="moveFocus($event)" (backspace)="deleteLastLetterLeft()"
-            (delete)="deleteLastLetterRight()" (newUserInput)="onPivotChanged($event)"></app-pivot-letter>
+            (delete)="deleteLastLetterRight()" (newUserInput)="onNewCharFromPivot($event)"></app-pivot-letter>
         <app-letter-box (moveFocus)="moveFocus($event)" (backspace)="onBackspaceRight($event)"
             *ngFor="let currLetter of lettersRight; let i = index" side="right" [character]="currLetter" [index]="i"
-            (characterAdded)="onCharacterAddedRight($event)" (characterChanged)="onLetterInputRight($event)">
+            (characterAdded)="onAddCharRight($event)" (characterChanged)="onLetterInputRight($event)" (delete)="deleteRight()">
         </app-letter-box>
     </div>
 </div>
