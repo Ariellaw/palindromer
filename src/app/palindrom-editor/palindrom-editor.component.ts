@@ -26,7 +26,7 @@ export class PalindromEditorComponent implements OnInit {
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
     // var focusedElement = window.document.activeElement;
-
+    this.focusOnNextPreviousElement("right", rightIdx, true, 1, this.lettersRight.length);
     this.addNewChar(
       this.lettersLeft,
       leftIdx,
@@ -34,7 +34,7 @@ export class PalindromEditorComponent implements OnInit {
       rightIdx + 1,
       character
     );
-    this.focusOnNextPreviousElement("right", rightIdx, true, 1);
+    
   }
 
   onAddCharLeft($event) {
@@ -42,6 +42,7 @@ export class PalindromEditorComponent implements OnInit {
     let rightIdx = this.lettersLeft.length - 1 - leftIdx;
     let character = $event.character;
     // var focusedElement = window.document.activeElement;
+    this.focusOnNextPreviousElement("left", leftIdx, true, 1, this.lettersLeft.length);
 
     this.addNewChar(
       this.lettersRight,
@@ -50,7 +51,6 @@ export class PalindromEditorComponent implements OnInit {
       leftIdx + 1,
       character
     );
-    this.focusOnNextPreviousElement("left", leftIdx, true, 1);
   }
   onNewCharFromPivot($event) {
     this.addNewChar(
@@ -65,13 +65,8 @@ export class PalindromEditorComponent implements OnInit {
 
   onChangeCharLeft() {}
 
-  onDeleteRight() {}
 
-  onDeleteLeft() {}
 
-  onBackspaceRight() {}
-
-  onBackspaceLeft() {}
 
   moveFocus($event: { keyCode: number; side: string; letterIdx: number }) {
     console.log("moveFocus", $event.letterIdx, $event.side);
@@ -87,14 +82,16 @@ export class PalindromEditorComponent implements OnInit {
   /*HELPERFUNCTIONS */
 
   moveFocusRight(side, letterIdx){
+    console.log("moveFocusRight",side, letterIdx,  letterIdx === this.lettersLeft.length)
     if (
       side === "right" &&
-      letterIdx === this.lettersRight.length - 1
+      letterIdx === this.lettersRight.length-1
     ) {
+      console.log("last one right side")
       document.getElementById("left0").focus();
     } else if (
       side === "left" &&
-      letterIdx === this.lettersLeft.length - 1
+      letterIdx === this.lettersLeft.length-1
     ) {
       this.pivotElement.focus();
     } else if (side === "pivot-input") {
@@ -106,7 +103,7 @@ export class PalindromEditorComponent implements OnInit {
   moveFocusLeft(side, letterIdx){
     if (
       side === "left" &&
-      letterIdx === 0
+      letterIdx === 0 && this.lettersRight.length>0
     ) {
       document.getElementById(`right${this.lettersRight.length-1}`).focus();
     } else if (
@@ -116,10 +113,52 @@ export class PalindromEditorComponent implements OnInit {
       this.pivotElement.focus();
     } else if (side === "pivot-input") {
       document.getElementById(`left${this.lettersLeft.length-1}`).focus();
-    } else {
+    } else if(this.lettersRight.length>0 && this.lettersLeft.length>0) {
       this.focusOnNextPreviousElement(side, letterIdx, false, -1);
     }
+    else{
+      this.pivotElement.focus();
+    }
   }
+
+  onBackspaceLeft($event: { letterIndex: number; character: string }) {
+    console.log("onBackspaceLeft");
+    this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
+    this.moveFocusLeft("left", $event.letterIndex)
+  }
+
+  onBackspaceRight($event: { letterIndex: number; character: string }) {
+
+    this.deleteChar(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.character);
+    this.moveFocusLeft("right", $event.letterIndex);
+  }
+  deleteRight($event: { letterIndex: number; character: string }){
+    this.deleteChar(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.character);
+    this.moveFocusRight("right", $event.letterIndex);
+
+
+  }
+
+  deleteLeft($event: { letterIndex: number; character: string }){
+    this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
+    this.moveFocusRight("left", $event.letterIndex);
+  }
+
+  getIdxFromLetterOnOtherSide(deletedLetter, arr1, arr2, idx2  ){
+      var letterIdx = this.getLetterFrequency(
+        idx2,
+        deletedLetter,
+        arr2
+      );
+
+      var idx1 = this.findIndexOnOppositeSide(
+        arr1,
+        deletedLetter,
+        letterIdx
+      );
+      return idx1;
+  }
+
   getNodeIfLetterBox(currElement) {
     var nextElement = currElement.nextSibling;
     var nextNode =
@@ -129,9 +168,10 @@ export class PalindromEditorComponent implements OnInit {
     return Promise.resolve(nextNode);
   }
 
-  focusOnNextPreviousElement(side, id, waitForIt, backOrForward) {
+  focusOnNextPreviousElement(side, id, waitForIt, backOrForward, arrLength=null) {
+ console.log("focusOnNextPreviousElement", side, id, waitForIt, backOrForward)
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
-    if (nextLetterBox) {
+    if (nextLetterBox  && !waitForIt) {
       nextLetterBox.focus();
     } else if (waitForIt) {
       var checkExist = setInterval(function() {
@@ -161,7 +201,16 @@ export class PalindromEditorComponent implements OnInit {
     arr2.splice(idx2, 0, newChar);
   }
 
-  deleteChar() {}
+  deleteChar(arr1, arr2, idx2, newChar) {
+    console.log("delete", idx2)
+    var isLetter = this.isLetterVerification(newChar);
+    if (isLetter) {
+       var idx1 =this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
+      arr1.splice(idx1, 1);
+    }
+    arr2.splice(idx2, 1);
+
+  }
 
   // deleteLastLetterLeft() {
   //   let character = this.lettersLeft[this.lettersLeft.length - 1];
@@ -172,13 +221,7 @@ export class PalindromEditorComponent implements OnInit {
   //     });
   //   }
   // }
-  // deleteLastLetterRight() {
-  //   let character = this.lettersRight[0];
-  //   if (this.lettersRight.length > 0) {
-  //     this.onBackspaceRight({ letterIndex: 0, character });
-  //   }
-  //   this.pivotElement.focus();
-  // }
+
 
   // onLetterInputRight($event: { character: string; letterIndex: number }) {
   //   let rightIdx = $event.letterIndex;
@@ -223,51 +266,7 @@ export class PalindromEditorComponent implements OnInit {
   //   );
   // }
 
-  // onBackspaceLeft($event: { letterIndex: number; character: string }) {
 
-  //   this.moveFocusOnDelete($event.letterIndex, this.lettersLeft);
-
-  //   let leftIdx = $event.letterIndex;
-  //   let deletedLetter = $event.character;
-  //   var isLetter = this.isLetterVerification(deletedLetter);
-
-  //   if (isLetter) {
-  //     var letterIdx = this.getLetterFrequency(
-  //       leftIdx,
-  //       deletedLetter,
-  //       this.lettersLeft
-  //     );
-
-  //     var rightIdx = this.findIndexOnOppositeSide(
-  //       this.lettersRight,
-  //       deletedLetter,
-  //       letterIdx
-  //     );
-  //   }
-  //   this.addOrDeleteCharacter(this.lettersRight, this.lettersLeft, null, rightIdx, leftIdx, true)
-  // }
-  // onBackspaceRight($event: { letterIndex: number; character: string }) {
-  //   this.moveFocusOnDelete($event.letterIndex, this.lettersRight)
-
-  //   let rightIdx = $event.letterIndex;
-  //   let deletedLetter = $event.character;
-  //   var isLetter = this.isLetterVerification(deletedLetter);
-
-  //   if (isLetter) {
-  //     var letterIdx = this.getLetterFrequency(
-  //       rightIdx,
-  //       deletedLetter,
-  //       this.lettersRight
-  //     );
-
-  //     var leftIdx = this.findIndexOnOppositeSide(
-  //       this.lettersLeft,
-  //       deletedLetter,
-  //       letterIdx
-  //     );
-  //   }
-  //   this.addOrDeleteCharacter(this.lettersRight, this.lettersLeft, null, rightIdx, leftIdx, true)
-  // }
 
   // previousElementIsLetterBox(currElement, nodeName) {
   //   var previousElement = currElement.previousSibling;
@@ -288,68 +287,24 @@ export class PalindromEditorComponent implements OnInit {
   //   !toDelete ?arr2.splice(idx2, 0, newChar):arr2.splice(idx2, 1);
   // }
 
-  // getLetterFrequency(idx, letter, lettersArr) {
-  //   let letterIdx = 0;
-  //   for (var i = 0; i <= idx; i++) {
-  //     if (lettersArr[i] === letter) {
-  //       letterIdx++;
-  //     }
-  //   }
-  //   return letterIdx;
-  // }
+  getLetterFrequency(idx, letter, lettersArr) {
+    let letterIdx = 0;
+    for (var i = 0; i <= idx; i++) {
+      if (lettersArr[i] === letter) {
+        letterIdx++;
+      }
+    }
+    return letterIdx;
+  }
 
-  // findIndexOnOppositeSide(lettersArr, letter, letterIdx) {
-  //   for (var i = lettersArr.length - 1; i >= 0; i--) {
-  //     if (lettersArr[i] === letter && letterIdx > 1) {
-  //       letterIdx--;
-  //     } else if (lettersArr[i] === letter && letterIdx === 1) {
-  //       return i;
-  //     }
-  //   }
-  // }
-  // deleteRight($event){
-  //   let leftIdx = $event.letterIndex;
-  //   let deletedLetter = $event.character;
-  //   var isLetter = this.isLetterVerification(deletedLetter);
+  findIndexOnOppositeSide(lettersArr, letter, letterIdx) {
+    for (var i = lettersArr.length - 1; i >= 0; i--) {
+      if (lettersArr[i] === letter && letterIdx > 1) {
+        letterIdx--;
+      } else if (lettersArr[i] === letter && letterIdx === 1) {
+        return i;
+      }
+    }
+  }
 
-  //   if (isLetter) {
-  //     var letterIdx = this.getLetterFrequency(
-  //       leftIdx,
-  //       deletedLetter,
-  //       this.lettersLeft
-  //     );
-
-  //     var rightIdx = this.findIndexOnOppositeSide(
-  //       this.lettersRight,
-  //       deletedLetter,
-  //       letterIdx
-  //     );
-  //   }
-  //   this.addOrDeleteCharacter(this.lettersRight, this.lettersLeft, null, rightIdx+1, leftIdx+1, true)
-
-  // }
-
-  // deleteLeft(){
-
-  // }
-  // moveFocusOnDelete(letterIndex, arr){
-  //   var focusedElement = window.document.activeElement;
-  //   var previousElement = this.previousElementIsLetterBox(
-  //     focusedElement.parentNode,
-  //     this.letterBoxElement
-  //   );
-  //   var nextElement = this.nextElementIsLetterBox(
-  //     focusedElement.parentNode,
-  //     this.letterBoxElement
-  //   );
-  //   if (letterIndex === arr.length - 1) {
-  //     this.pivotElement.focus();
-  //   } else if (previousElement) {
-  //     this.focusOnElement(previousElement);
-  //   } else if (nextElement) {
-  //     this.focusOnElement(nextElement);
-  //   } else {
-  //     this.pivotElement.focus();
-  //   }
-  // }
 }

@@ -7,13 +7,15 @@ import { PalindromEditorComponent } from './palindrom-editor/palindrom-editor.co
 import { LetterBoxComponent } from './letter-box/letter-box.component';
 import { PivotLetterComponent } from './pivot-letter/pivot-letter.component';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PalindromEditorComponent,
     LetterBoxComponent,
-    PivotLetterComponent
+    PivotLetterComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

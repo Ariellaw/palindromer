@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 // import { type } from 'os';
 // import {InputEvent} from '@types/dom-inputevent';
-
+import {HelperService} from '../helper.service';
 @Component({
   selector: "app-letter-box",
   templateUrl: "./letter-box.component.html",
@@ -25,24 +25,25 @@ export class LetterBoxComponent implements OnInit {
     letterIndex: number;
   }>();
   @Output() delete = new EventEmitter<{letterIndex: number; character: string;}>();
-
+  typeOfChar: string = "letter";
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
-  typeOfChar: string = "letter";
 
   constructor() {}
 
   ngOnInit() {
     this.assignCharacterType();
   }
-  isLetterVerification1(character) {
+  isLetterVerification(character) {
     return (
       character.match(this.latinLettersRegex) ||
       character.match(this.hebrewLettersRegex)
     );
   }
-
+  test(){
+    console.log("test touch")
+  }
   handleKeyup(event: KeyboardEvent) {
     event.preventDefault();
     // var currText = event.target.innerText;
@@ -60,9 +61,12 @@ export class LetterBoxComponent implements OnInit {
         letterIndex: this.index,
         character: this.character
       });
-    } else if (newChar.length > 1) {
+    } 
+    else if (newChar.length > 1) {
       return;
-    } else {
+    }
+     else {
+      console.log("the function is working")
       this.assignCharacterType();
       this.characterAdded.emit({
         character: newChar,
@@ -72,7 +76,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   assignCharacterType() {
-    var isLetter = this.isLetterVerification1(this.character);
+    var isLetter = this.isLetterVerification(this.character);
     if (isLetter) {
       this.typeOfChar = "letter";
     } else if (this.character === " ") {
