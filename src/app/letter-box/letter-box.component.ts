@@ -35,6 +35,9 @@ export class LetterBoxComponent implements OnInit {
   ngOnInit() {
     this.assignCharacterType();
   }
+  // ngOnChanges($event){
+    
+  // }
   isLetterVerification(character) {
     return (
       character.match(this.latinLettersRegex) ||
@@ -63,15 +66,15 @@ export class LetterBoxComponent implements OnInit {
       });
     } 
     else if (newChar.length > 1) {
+      
       return;
     }
      else {
-      console.log("the function is working")
-      this.assignCharacterType();
       this.characterAdded.emit({
         character: newChar,
         letterIndex: this.index
       });
+      this.assignCharacterType();
     }
   }
 
@@ -93,3 +96,4 @@ export class LetterBoxComponent implements OnInit {
 //Support for deleting puncuation
 //collapse pivot:
 // add to github pages
+//Add a services page

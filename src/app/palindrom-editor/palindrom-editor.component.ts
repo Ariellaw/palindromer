@@ -21,6 +21,7 @@ export class PalindromEditorComponent implements OnInit {
     this.pivotElement = document.getElementById("pivot-input") as HTMLElement;
     this.pivotElement.focus();
   }
+
   onAddCharRight($event) {
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
@@ -143,6 +144,19 @@ export class PalindromEditorComponent implements OnInit {
     this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
     this.moveFocusRight("left", $event.letterIndex);
   }
+  deleteFromPivot(){
+    if(this.lettersRight.length>0){
+      this.deleteChar(this.lettersLeft, this.lettersRight, 0 , this.lettersRight[0]);
+      this.pivotElement.focus();
+    }
+  }
+
+  backspaceFromPivot(){
+    if(this.lettersLeft.length>0){
+      this.deleteChar(this.lettersRight, this.lettersLeft, this.lettersLeft.length-1, this.lettersLeft[this.lettersLeft.length-1]);
+      this.pivotElement.focus();
+    }
+  }
 
   getIdxFromLetterOnOtherSide(deletedLetter, arr1, arr2, idx2  ){
       var letterIdx = this.getLetterFrequency(
@@ -180,7 +194,6 @@ export class PalindromEditorComponent implements OnInit {
           nextLetterBox.focus();
           clearInterval(checkExist);
         }
-        // console.log("tried")
       }, 100);
     } else return false;
   }
@@ -211,81 +224,6 @@ export class PalindromEditorComponent implements OnInit {
     arr2.splice(idx2, 1);
 
   }
-
-  // deleteLastLetterLeft() {
-  //   let character = this.lettersLeft[this.lettersLeft.length - 1];
-  //   if (this.lettersLeft.length > 0) {
-  //     this.onBackspaceLeft({
-  //       letterIndex: this.lettersLeft.length - 1,
-  //       character
-  //     });
-  //   }
-  // }
-
-
-  // onLetterInputRight($event: { character: string; letterIndex: number }) {
-  //   let rightIdx = $event.letterIndex;
-  //   let leftIdx = this.lettersRight.length - 1 - rightIdx;
-  //   let character = $event.character;
-
-  // onLetterInputLeft($event: { character: string; letterIndex: number }) {
-  //   let leftIdx = $event.letterIndex;
-  //   let rightIdx = this.lettersRight.length - 1 - leftIdx;
-  //   let character = $event.character;
-  //   this.addOrDeleteCharacter(
-  //     this.lettersRight,
-  //     this.lettersLeft,
-  //     character,
-  //     rightIdx,
-  //     leftIdx, false
-  //   );
-  // }
-  // onCharacterAddedRight($event: { character: string; letterIndex: number }) {
-  //   let rightIdx = $event.letterIndex;
-  //   let leftIdx = this.lettersRight.length - 1 - rightIdx;
-  //   let character = $event.character;
-
-  //   this.addOrDeleteCharacter(
-  //     this.lettersLeft,
-  //     this.lettersRight,
-  //     character,
-  //     leftIdx,
-  //     rightIdx+1, false
-  //   );
-  // }
-  // onCharacterAddedLeft($event: { character: string; letterIndex: number }) {
-  //   let leftIdx = $event.letterIndex;
-  //   let rightIdx = this.lettersRight.length - 1 - leftIdx;
-  //   let character = $event.character;
-  //   this.addOrDeleteCharacter(
-  //     this.lettersRight,
-  //     this.lettersLeft,
-  //     character,
-  //     rightIdx,
-  //     leftIdx + 1, false
-  //   );
-  // }
-
-
-
-  // previousElementIsLetterBox(currElement, nodeName) {
-  //   var previousElement = currElement.previousSibling;
-  //   var element =
-  //     previousElement && previousElement.nodeName === nodeName
-  //       ? previousElement
-  //       : null;
-  //   return element;
-  // }
-
-  // addOrDeleteCharacter(arr1, arr2, newChar, idx1, idx2, toDelete) {
-  //   if(newChar){
-  //     var isLetter = this.isLetterVerification(newChar);
-  //   }
-  //   if (isLetter || toDelete) {
-  //     !toDelete ?arr1.splice(idx1, 0, newChar):arr1.splice(idx1, 1);
-  //   }
-  //   !toDelete ?arr2.splice(idx2, 0, newChar):arr2.splice(idx2, 1);
-  // }
 
   getLetterFrequency(idx, letter, lettersArr) {
     let letterIdx = 0;
