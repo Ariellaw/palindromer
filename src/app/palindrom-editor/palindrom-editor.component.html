@@ -3,7 +3,7 @@
     <div class="palindrom-container" id="palindrom-container">
         <app-letter-box (moveFocus)="moveFocus($event)" (backspace)="onBackspaceLeft($event)"
             *ngFor="let currLetter of lettersLeft ; let i = index" side="left" [character]="currLetter" [index]="i"
-            (characterAdded)="onAddCharLeft($event)" (characterChanged)="onLetterInputLeft($event)" (delete)="deleteLeft($event)">
+            (characterAdded)="onAddCharLeft($event)" (newUserInput)="onNewCharFromPivot($event)" (characterChanged)="onLetterInputLeft($event)" (delete)="deleteLeft($event)">
         </app-letter-box>
         <app-pivot-letter (moveFocus)="moveFocus($event)" (backspace)="backspaceFromPivot()"
             (delete)="deleteFromPivot()" (newUserInput)="onNewCharFromPivot($event)"></app-pivot-letter>
@@ -12,4 +12,8 @@
             (characterAdded)="onAddCharRight($event)" (characterChanged)="onLetterInputRight($event)" (delete)="deleteRight($event)">
         </app-letter-box>
     </div>
+    <br>
+    <h1>letterBox compenent is working :): {{letterBox}}</h1>
+    <h1>Pivot compenent is working :): {{pivotIsWorking}}</h1>
+
 </div>

@@ -19,6 +19,7 @@ export class LetterBoxComponent implements OnInit {
     letterIndex: number;
     character: string;
   }>();
+  @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
   @Output() moveFocus = new EventEmitter<{ keyCode: number, side:string, letterIdx:number }>();
   @Output() characterAdded = new EventEmitter<{
     character: string;
@@ -45,12 +46,14 @@ export class LetterBoxComponent implements OnInit {
     );
   }
   test(){
-    console.log("test touch")
+    console.log("test touch" )
   }
   handleKeyup(event: KeyboardEvent) {
-    event.preventDefault();
+    // event.preventDefault();
     // var currText = event.target.innerText;
     var newChar = event.key;
+    var code = event.keyCode.toString()
+    console.log("handleKeyup", event, "event.target",event.target, "code", code, "this.character", this.character)
 
     if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode, side:this.side, letterIdx:this.index });
@@ -65,16 +68,21 @@ export class LetterBoxComponent implements OnInit {
         character: this.character
       });
     } 
-    else if (newChar.length > 1) {
+    else if (this.character.length > 2) {
       
       return;
     }
-     else {
+     else if(this.character.length===2){
+       console.log("testing - length is 2")
       this.characterAdded.emit({
-        character: newChar,
+        character: this.character.charAt(1),
         letterIndex: this.index
       });
-      this.assignCharacterType();
+      this.character=this.character.charAt(0);
+      // this.newUserInput.emit({
+      //   newLetter: newChar
+      // });
+      // this.assignCharacterType();
     }
   }
 

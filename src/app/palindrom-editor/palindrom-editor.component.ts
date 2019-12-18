@@ -15,6 +15,8 @@ export class PalindromEditorComponent implements OnInit {
   pivotElement: HTMLElement;
   letterBoxElement = "APP-LETTER-BOX";
   pivotElementNodeName = "APP-PIVOT-LETTER";
+  letterBox;
+  pivotIsWorking=false;
   constructor() {}
   // באב. ליל באב.
   ngOnInit() {
@@ -23,10 +25,10 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharRight($event) {
+  console.log("onAddCharRightra# ew")
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
-    // var focusedElement = window.document.activeElement;
     this.focusOnNextPreviousElement("right", rightIdx, true, 1, this.lettersRight.length);
     this.addNewChar(
       this.lettersLeft,
@@ -39,10 +41,10 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharLeft($event) {
+    this.letterBox= $event.character;
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersLeft.length - 1 - leftIdx;
     let character = $event.character;
-    // var focusedElement = window.document.activeElement;
     this.focusOnNextPreviousElement("left", leftIdx, true, 1, this.lettersLeft.length);
 
     this.addNewChar(
@@ -54,6 +56,7 @@ export class PalindromEditorComponent implements OnInit {
     );
   }
   onNewCharFromPivot($event) {
+    this.pivotIsWorking=true;
     this.addNewChar(
       this.lettersLeft,
       this.lettersLeft.length,
@@ -183,7 +186,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   focusOnNextPreviousElement(side, id, waitForIt, backOrForward, arrLength=null) {
- console.log("focusOnNextPreviousElement", side, id, waitForIt, backOrForward)
+//  console.log("focusOnNextPreviousElement", side, id, waitForIt, backOrForward)
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
     if (nextLetterBox  && !waitForIt) {
       nextLetterBox.focus();
