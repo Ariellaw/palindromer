@@ -1,1 +1,5 @@
-<p>footer works!</p>
+<footer class="footer"  *ngIf="screenwidth<700" >
+    <h1 class="btn" (click)="switchScreenDirection(true)"  *ngIf="!isRightToLeft">Right to Left</h1>  
+    <h1 class="btn" (click)="switchScreenDirection(false)"  *ngIf="isRightToLeft">Left to Right</h1>  
+
+</footer>

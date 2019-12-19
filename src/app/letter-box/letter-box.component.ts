@@ -46,15 +46,8 @@ export class LetterBoxComponent implements OnInit {
     );
   }
   test(){
-    console.log("test touch" )
   }
   handleKeyup(event: KeyboardEvent) {
-    // event.preventDefault();
-    // var currText = event.target.innerText;
-    var newChar = event.key;
-    var code = event.keyCode.toString()
-    console.log("handleKeyup", event, "event.target",event.target, "code", code, "this.character", this.character)
-
     if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode, side:this.side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
@@ -67,13 +60,10 @@ export class LetterBoxComponent implements OnInit {
         letterIndex: this.index,
         character: this.character
       });
-    } 
-    else if (this.character.length > 2) {
-      
+    } else if(event.keyCode===16 || event.keyCode===20 || event.keyCode===13 || event.keyCode===17 ){
       return;
     }
      else if(this.character.length===2){
-       console.log("testing - length is 2")
       this.characterAdded.emit({
         character: this.character.charAt(1),
         letterIndex: this.index

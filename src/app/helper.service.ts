@@ -11,7 +11,6 @@ export class HelperService {
   constructor() { }
 
   isLetterVerification(character) {
-    console.log("services letter verification")
     return (
       character.match(this.latinLettersRegex) ||
       character.match(this.hebrewLettersRegex)

@@ -25,7 +25,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharRight($event) {
-  console.log("onAddCharRightra# ew")
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
@@ -41,6 +40,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharLeft($event) {
+
     this.letterBox= $event.character;
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersLeft.length - 1 - leftIdx;
@@ -73,7 +73,6 @@ export class PalindromEditorComponent implements OnInit {
 
 
   moveFocus($event: { keyCode: number; side: string; letterIdx: number }) {
-    console.log("moveFocus", $event.letterIdx, $event.side);
     if ($event.keyCode === 39) {
       this.moveFocusRight($event.side, $event.letterIdx);
     }else {
@@ -86,12 +85,10 @@ export class PalindromEditorComponent implements OnInit {
   /*HELPERFUNCTIONS */
 
   moveFocusRight(side, letterIdx){
-    console.log("moveFocusRight",side, letterIdx,  letterIdx === this.lettersLeft.length)
     if (
       side === "right" &&
       letterIdx === this.lettersRight.length-1
     ) {
-      console.log("last one right side")
       document.getElementById("left0").focus();
     } else if (
       side === "left" &&
@@ -126,7 +123,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onBackspaceLeft($event: { letterIndex: number; character: string }) {
-    console.log("onBackspaceLeft");
     this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
     this.moveFocusLeft("left", $event.letterIndex)
   }
@@ -186,7 +182,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   focusOnNextPreviousElement(side, id, waitForIt, backOrForward, arrLength=null) {
-//  console.log("focusOnNextPreviousElement", side, id, waitForIt, backOrForward)
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
     if (nextLetterBox  && !waitForIt) {
       nextLetterBox.focus();
@@ -218,7 +213,6 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   deleteChar(arr1, arr2, idx2, newChar) {
-    console.log("delete", idx2)
     var isLetter = this.isLetterVerification(newChar);
     if (isLetter) {
        var idx1 =this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);

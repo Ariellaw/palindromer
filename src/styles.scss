@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+
+
 *{
     padding:0px;
     margin:0px;
@@ -10,13 +14,19 @@ html{
     font-size:10px;
 }
 
-
+h1 {
+    margin: 0 10px 0 10px;
+    font: bold 24px/30px Georgia, "Times New Roman", Times, serif;
+    color: #694f10;
+    cursor: pointer;
+  }
 
 body{
-    height: 100000px;
-    // height: 100vh;
-    // overflow-y: hidden;
-    position: fixed;
+    min-height: 100vh;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    padding-bottom: 5rem;
 }
 
 .btn{

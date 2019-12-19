@@ -8,6 +8,8 @@ import { LetterBoxComponent } from './letter-box/letter-box.component';
 import { PivotLetterComponent } from './pivot-letter/pivot-letter.component';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { TextComponent } from './text/text.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { FooterComponent } from './footer/footer.component';
     PalindromEditorComponent,
     LetterBoxComponent,
     PivotLetterComponent,
-    FooterComponent
+    FooterComponent,
+    NavbarComponent,
+    TextComponent
   ],
   imports: [
     BrowserModule,
