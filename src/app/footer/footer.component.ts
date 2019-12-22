@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
   screenwidth:number;
-  @Input() isRightToLeft:string="false";
+  @Input() isRightToLeft;
   @Output() changeScreenDirection = new EventEmitter<{isRightToLeft:boolean}>();
 
   constructor() { }

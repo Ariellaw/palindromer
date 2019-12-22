@@ -40,6 +40,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharLeft($event) {
+    console.log("onAddCharLeft", $event)
 
     this.letterBox= $event.character;
     let leftIdx = $event.letterIndex;
@@ -102,6 +103,7 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   moveFocusLeft(side, letterIdx){
+    console.log("moveFocusLeft", side, letterIdx);
     if (
       side === "left" &&
       letterIdx === 0 && this.lettersRight.length>0
@@ -123,6 +125,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onBackspaceLeft($event: { letterIndex: number; character: string }) {
+    console.log("onBackspaceLeft",$event);
     this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
     this.moveFocusLeft("left", $event.letterIndex)
   }
@@ -182,6 +185,7 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   focusOnNextPreviousElement(side, id, waitForIt, backOrForward, arrLength=null) {
+    console.log("focusOnNextPreviousElement", side, id, waitForIt, backOrForward)
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
     if (nextLetterBox  && !waitForIt) {
       nextLetterBox.focus();

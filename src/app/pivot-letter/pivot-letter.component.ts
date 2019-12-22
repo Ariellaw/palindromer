@@ -28,6 +28,7 @@ export class PivotLetterComponent implements OnInit {
     } else if (event.keyCode === 8 || event.keyCode === 46) {
       if (!this.pivotIsCollapsed) {
         this.pivotIsCollapsed = true;
+        this.input = '';
       } else {
         if (event.keyCode === 8) {
           this.backspace.emit();
