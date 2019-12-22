@@ -38,6 +38,17 @@ export class PalindromEditorComponent implements OnInit {
     );
     
   }
+  onCharacterChangedRight($event: {prevChar: string; newChar:string; letterIndex: number}) {
+    console.log("onChangeCharRight", $event.prevChar, $event.newChar , $event.letterIndex);
+    this.replaceLetter(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.prevChar, $event.newChar);
+
+  }
+
+  onCharacterChangedLeft($event: {prevChar: string; newChar:string; letterIndex: number}) {
+    console.log("onChangeCharLeft", $event.prevChar ,$event.newChar , $event.letterIndex);
+    this.replaceLetter(this.lettersRight, this.lettersLeft, $event.letterIndex,  $event.prevChar, $event.newChar);
+
+  }
 
   onAddCharLeft($event) {
     console.log("onAddCharLeft", $event)
@@ -66,9 +77,7 @@ export class PalindromEditorComponent implements OnInit {
       $event.newLetter
     );
   }
-  onChangeCharRight() {}
 
-  onChangeCharLeft() {}
 
 
 
@@ -221,10 +230,31 @@ export class PalindromEditorComponent implements OnInit {
     if (isLetter) {
        var idx1 =this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
       arr1.splice(idx1, 1);
+    }else{
     }
     arr2.splice(idx2, 1);
-
   }
+
+  replaceLetter(arr1, arr2, idx2, oldChar, newChar){
+    var isLetterOld = this.isLetterVerification(oldChar);
+    var isLetterNew = this.isLetterVerification(newChar);
+    var idx1 = this.getIdxFromLetterOnOtherSide(oldChar, arr1, arr2, idx2);
+    console.log("replaceLetter", arr1, idx1, arr2, idx2, oldChar, newChar);
+
+    if(isLetterOld && isLetterNew){
+      arr1[idx1] = newChar;
+      arr2[idx2] = newChar;
+    }else if(isLetterNew && !isLetterOld){
+      return;
+    }else if(!isLetterNew && isLetterOld){
+      arr2[idx2]=newChar;
+      arr1.splice(idx1,1);
+    }
+  }
+  //both are letters
+  //letter replaced by punctuation
+  //puntuation replaced by letter
+  //
 
   getLetterFrequency(idx, letter, lettersArr) {
     let letterIdx = 0;

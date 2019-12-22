@@ -8,11 +8,13 @@ import {HelperService} from '../helper.service';
   styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
+  currChar:string="";
   @Input() character: string = "";
   @Input() side: string = "";
   @Input() index: number; //TODO: should a letterbox be aware of its index? maybe there's another solution?
   @Output() characterChanged = new EventEmitter<{
-    character: string;
+    prevChar: string;
+    newChar:string;
     letterIndex: number;
   }>();
   @Output() backspace = new EventEmitter<{
@@ -35,6 +37,7 @@ export class LetterBoxComponent implements OnInit {
 
   ngOnInit() {
     this.assignCharacterType();
+    this.currChar = this.character;
   }
   // ngOnChanges($event){
     
@@ -51,9 +54,10 @@ export class LetterBoxComponent implements OnInit {
     if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({ keyCode: event.keyCode, side:this.side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
+      event.preventDefault();
       this.backspace.emit({
         letterIndex: this.index,
-        character: this.character
+        character: this.currChar
       });
     }else if(event.keyCode === 46){
       this.delete.emit({
@@ -69,10 +73,13 @@ export class LetterBoxComponent implements OnInit {
         letterIndex: this.index
       });
       this.character=this.character.charAt(0);
-      // this.newUserInput.emit({
-      //   newLetter: newChar
-      // });
-      // this.assignCharacterType();
+    }else if(this.character.length===1){
+      this.characterChanged.emit({
+        prevChar: this.currChar,
+        newChar: this.character,
+        letterIndex: this.index
+      })
+      this.currChar = this.character;
     }
   }
 
