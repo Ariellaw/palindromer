@@ -1,9 +1,12 @@
-$purpleEmphasis:#A17DE4;
+@import '../../scss/variables.scss';
+@import '../../scss/variables.scss';
+
+
 
 .complete-text {
-  border: 5px solid $purpleEmphasis;
+  border: 5px solid $emphasis_purple;
   border-radius: 1rem;
   width: 75%;
   margin-top: 10rem;
-  background-color: #FAF4E1
+  background-color: $main_color;
 }

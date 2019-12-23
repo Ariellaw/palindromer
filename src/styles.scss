@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./scss/variables";
 
 * {
   padding: 0px;
@@ -7,8 +7,7 @@
 }
 
 html {
-  background-color: #faf4e1;
-  // background-color:pink;
+  background-color: $main_color;
   font-size: 10px;
 }
 .basic-char-box {
@@ -18,17 +17,18 @@ html {
   font-size: 25px;
   text-align: center;
   color: transparent;
-  text-shadow: 0 0 0 black;
-  background-color: #faf4e1;
+  text-shadow: 0 0 0 $black;
   width: 35px;
   cursor: text;
   font-size: 20px;
+  margin-bottom: 5px;
+  background-color: $main_color;
 }
 
 h1 {
   margin: 0 10px 0 10px;
   font: bold 24px/30px Georgia, "Times New Roman", Times, serif;
-  color: #694f10;
+  color: $title_color;
   cursor: pointer;
 }
 

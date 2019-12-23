@@ -1,30 +1,26 @@
-$purpleEmphasis:#A17DE4;
+@import '../../scss/variables.scss';
+
 
 .pivot-box {
   border-radius: 1rem;
-  border: 4px solid $purpleEmphasis;
+  border: 3px solid $emphasis_purple;
   margin-right: 2px;
   margin-left: 2px;
-  margin-bottom: 5px;
- &:focus {
-    border: 4px solid rgb(21, 223, 230);
+  &:focus {
+    border: 3px solid $focus_color;
     outline: none;
     text-shadow: 0 0 0 red;
   }
 }
 
 .expanded {
-  width: 25px;
-  height: 25px;
-  padding: 5px;
   cursor: text;
-
 }
 
 .collapsed {
   width: 0px;
   height: 60px;
   padding: 0px;
-  border-color: black;
+  border-color: $black;
   cursor: pointer;
 }

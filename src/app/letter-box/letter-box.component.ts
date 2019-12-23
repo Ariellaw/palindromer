@@ -4,7 +4,7 @@ import {Direction} from '../common/services/services';
 
 enum charTypes  {
   Letter = "letter",
-  Punctation = "punctation",
+  Punctuation = "punctuation",
   Space = "space"
 }
 
@@ -88,7 +88,7 @@ export class LetterBoxComponent implements OnInit {
     } else if (this.character === " ") {
       this.typeOfChar = charTypes.Space
     } else {
-      this.typeOfChar = charTypes.Punctation;
+      this.typeOfChar = charTypes.Punctuation;
     }
   }
 }
