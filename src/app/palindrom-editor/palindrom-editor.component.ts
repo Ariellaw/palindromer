@@ -81,7 +81,6 @@ export class PalindromEditorComponent implements OnInit {
 
 
   moveFocus($event: { keyCode: number; side: Direction; letterIdx: number }) {
-    console.log("general move focus", $event.side)
     if ($event.keyCode === 39) {
       this.moveFocusRight($event.side, $event.letterIdx);
     }else {
@@ -94,7 +93,6 @@ export class PalindromEditorComponent implements OnInit {
   /*HELPERFUNCTIONS */
 
   moveFocusRight(side, letterIdx){
-    console.log("moveFocusRight", side, letterIdx, typeof side)
     if (
       side === Direction.Right &&
       letterIdx === this.lettersRight.length-1

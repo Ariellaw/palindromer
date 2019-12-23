@@ -1,9 +1,12 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
-// import { type } from 'os';
-// import {InputEvent} from '@types/dom-inputevent';
 import {ServicesService} from '../common/services/services';
 import {Direction} from '../common/services/services';
 
+enum charTypes  {
+  Letter = "letter",
+  Punctation = "punctation",
+  Space = "space"
+}
 
 @Component({
   selector: "app-letter-box",
@@ -12,6 +15,7 @@ import {Direction} from '../common/services/services';
 })
 export class LetterBoxComponent implements OnInit {
   currChar:string="";
+  typeOfChar: charTypes = charTypes.Letter;
   @Input() character: string = "";
   @Input() side: string = "";
   @Input() index: number; //TODO: should a letterbox be aware of its index? maybe there's another solution?
@@ -31,9 +35,7 @@ export class LetterBoxComponent implements OnInit {
     letterIndex: number;
   }>();
   @Output() delete = new EventEmitter<{letterIndex: number; character: string;}>();
-  typeOfChar: string = "letter";
-  left = "left";
-  right = "right";
+
 
   constructor(private services: ServicesService) {}
 
@@ -46,9 +48,8 @@ export class LetterBoxComponent implements OnInit {
   handleKeyup(event: KeyboardEvent) {
     if (event.keyCode === 37 || event.keyCode === 39) {
       var side:Direction;
-      if(this.side===this.right){side = Direction.Right}
-      else if(this.side === this.left){side = Direction.Left}
-      console.log("handleKeyup", side)
+      if(this.side===Direction.Right){side = Direction.Right}
+      else if(this.side === Direction.Left){side = Direction.Left}
       this.moveFocus.emit({ keyCode: event.keyCode, side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
       event.preventDefault();
@@ -83,11 +84,11 @@ export class LetterBoxComponent implements OnInit {
   assignCharacterType() {
     var isLetter = this.services.isLetterVerification(this.character);
     if (isLetter) {
-      this.typeOfChar = "letter";
+      this.typeOfChar = charTypes.Letter;
     } else if (this.character === " ") {
-      this.typeOfChar = "space";
+      this.typeOfChar = charTypes.Space
     } else {
-      this.typeOfChar = "punctuation";
+      this.typeOfChar = charTypes.Punctation;
     }
   }
 }
