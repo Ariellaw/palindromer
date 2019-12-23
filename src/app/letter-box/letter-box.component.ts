@@ -1,7 +1,10 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 // import { type } from 'os';
 // import {InputEvent} from '@types/dom-inputevent';
-import {HelperService} from '../helper.service';
+import {ServicesService} from '../common/services/services';
+import {Direction} from '../common/services/services';
+
+
 @Component({
   selector: "app-letter-box",
   templateUrl: "./letter-box.component.html",
@@ -22,37 +25,31 @@ export class LetterBoxComponent implements OnInit {
     character: string;
   }>();
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
-  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:string, letterIdx:number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:Direction, letterIdx:number }>();
   @Output() characterAdded = new EventEmitter<{
     character: string;
     letterIndex: number;
   }>();
   @Output() delete = new EventEmitter<{letterIndex: number; character: string;}>();
   typeOfChar: string = "letter";
-  punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
-  latinLettersRegex = /^[A-Za-z]+$/;
-  hebrewLettersRegex = "^[א-ת]+$";
+  left = "left";
+  right = "right";
 
-  constructor() {}
+  constructor(private services: ServicesService) {}
 
   ngOnInit() {
     this.assignCharacterType();
     this.currChar = this.character;
   }
-  // ngOnChanges($event){
-    
-  // }
-  isLetterVerification(character) {
-    return (
-      character.match(this.latinLettersRegex) ||
-      character.match(this.hebrewLettersRegex)
-    );
-  }
-  test(){
-  }
+
+
   handleKeyup(event: KeyboardEvent) {
     if (event.keyCode === 37 || event.keyCode === 39) {
-      this.moveFocus.emit({ keyCode: event.keyCode, side:this.side, letterIdx:this.index });
+      var side:Direction;
+      if(this.side===this.right){side = Direction.Right}
+      else if(this.side === this.left){side = Direction.Left}
+      console.log("handleKeyup", side)
+      this.moveFocus.emit({ keyCode: event.keyCode, side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
       event.preventDefault();
       this.backspace.emit({
@@ -84,7 +81,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   assignCharacterType() {
-    var isLetter = this.isLetterVerification(this.character);
+    var isLetter = this.services.isLetterVerification(this.character);
     if (isLetter) {
       this.typeOfChar = "letter";
     } else if (this.character === " ") {

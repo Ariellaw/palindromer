@@ -1,14 +1,20 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
+
+export enum Direction {
+  Left = "left",
+  Right = "right",
+  Pivot = "pivot-input"
+}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
-export class HelperService {
+export class ServicesService {
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
 
-  constructor() { }
+  constructor() {}
 
   isLetterVerification(character) {
     return (

@@ -1,16 +1,19 @@
 .letter-box{
     font-weight: bold;
-    border-radius: 4px;
     font-size: 25px;
     // padding: 5px;
     height: 30px;
     text-align: center;
-    margin-right: 3px;
     margin-bottom:5px;
     display: inline-block;  
     color: transparent;
     text-shadow: 0 0 0 black;
     position: relative;
+    border: none;
+    background-color: #FAF4E1;
+    width: 35px;
+    cursor: text;
+    
     &:focus{
         border: 3px solid gold;
         outline: none;
@@ -19,28 +22,32 @@
 }
 
 .punctuation{
-    width: 20px;
-    margin-right: 4px;
+    margin-right: 2px;
     margin-left:0px;
-    // border-bottom: 5px solid darkgray;
+    border-bottom: 2px solid #BDE366;
     // background-color: yellow;
 
+}
 
-}
+
 .space{
-    width: 10px;
-    margin-right: 0px;
-    margin-left:0px;
+    margin-right: 2px;
+    margin-left:2px;
     display: block;
-    border-bottom: 1px solid hotpink;
-    // background-color: blueviolet;
-}
+    border-bottom:2px solid #A57FE8;
+
+    // border-bottom: 1px solid hotpink;
+}    
+
 
 .letter{
-    width: 35px;
-    border-bottom: 1px solid darkblue;
-    margin-right: 0px;
-    margin-left:4px;
+    // border-bottom: 1px solid darkblue;
+    margin-right: 2px;
+    margin-left:2px;
+    border: 2px solid #7FD7E8;
+    border-radius: 4px;
+
+
 }
 
 .hidden{

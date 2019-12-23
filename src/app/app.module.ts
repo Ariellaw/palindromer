@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { TextComponent } from './text/text.component';
+import {ConstantsService} from './common/services/constants'
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,7 @@ import { TextComponent } from './text/text.component';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [ConstantsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

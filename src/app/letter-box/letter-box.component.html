@@ -1,2 +1,2 @@
 
-<input  [ngClass]="{'space':typeOfChar==='space', 'punctuation':typeOfChar==='punctuation', 'letter': typeOfChar==='letter'}" type="text" [(ngModel)]="character" [id]="side+index" class="letter-box btn" (keyup)="handleKeyup($event)"   maxlength="2"/> 
+<input  [ngClass]="{'space':typeOfChar==='space', 'punctuation':typeOfChar==='punctuation', 'letter': typeOfChar==='letter'}" type="text" [(ngModel)]="character" [id]="side+index" class="letter-box" (keyup)="handleKeyup($event)"   maxlength="2"/> 
