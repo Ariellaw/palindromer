@@ -1,36 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
 
-
-
-
-*{
-    padding:0px;
-    margin:0px;
-    border: 0px;
+* {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
 }
 
-html{
-    background-color: #FAF4E1;
-    // background-color:pink;
-    font-size:10px;
+html {
+  background-color: #faf4e1;
+  // background-color:pink;
+  font-size: 10px;
+}
+.basic-char-box {
+  height: 30px;
+  padding: 5px;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  color: transparent;
+  text-shadow: 0 0 0 black;
+  background-color: #faf4e1;
+  width: 35px;
+  cursor: text;
+  font-size: 20px;
 }
 
 h1 {
-    margin: 0 10px 0 10px;
-    font: bold 24px/30px Georgia, "Times New Roman", Times, serif;
-    color: #694f10;
-    cursor: pointer;
-  }
-
-body{
-    min-height: 100vh;
-    overflow: hidden;
-    display: block;
-    position: relative;
-    padding-bottom: 5rem;
+  margin: 0 10px 0 10px;
+  font: bold 24px/30px Georgia, "Times New Roman", Times, serif;
+  color: #694f10;
+  cursor: pointer;
 }
 
-.btn{
-    cursor: pointer;
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  padding-bottom: 5rem;
 }
 
+.btn {
+  cursor: pointer;
+}

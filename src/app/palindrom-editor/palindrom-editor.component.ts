@@ -3,7 +3,10 @@ import {ServicesService} from '../common/services/services';
 import {Direction} from '../common/services/services';
 
 
-
+// enum charElements {
+//   LetterBoxElement = "APP-LETTER-BOX",
+//   PivotElementNodeName = "APP-PIVOT-LETTER"
+// }
 
 @Component({
   selector: "app-palindrom-editor",
@@ -14,9 +17,7 @@ export class PalindromEditorComponent implements OnInit {
   lettersLeft = ["t", "!", "a", "c"];
   lettersRight = ["c", "@", "a"," " ,"t"];
   pivotElement: HTMLElement;
-  letterBoxElement = "APP-LETTER-BOX";
-  pivotElementNodeName = "APP-PIVOT-LETTER";
-  letterBox;
+ 
 
   constructor(private services: ServicesService) {}
 
@@ -37,7 +38,22 @@ export class PalindromEditorComponent implements OnInit {
       rightIdx + 1,
       character
     );
-    
+  }
+
+  onAddCharLeft($event) {
+
+    let character = $event.character;
+    let leftIdx = $event.letterIndex;
+    let rightIdx = this.lettersLeft.length - 1 - leftIdx;
+    this.focusOnNextPreviousElement(Direction.Left, leftIdx, true, 1, this.lettersLeft.length);
+
+    this.addNewChar(
+      this.lettersRight,
+      rightIdx,
+      this.lettersLeft,
+      leftIdx + 1,
+      character
+    );
   }
   onCharacterChangedRight($event: {prevChar: string; newChar:string; letterIndex: number}) {
     this.replaceLetter(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.prevChar, $event.newChar);
@@ -49,22 +65,7 @@ export class PalindromEditorComponent implements OnInit {
 
   }
 
-  onAddCharLeft($event) {
 
-    this.letterBox= $event.character;
-    let leftIdx = $event.letterIndex;
-    let rightIdx = this.lettersLeft.length - 1 - leftIdx;
-    let character = $event.character;
-    this.focusOnNextPreviousElement(Direction.Left, leftIdx, true, 1, this.lettersLeft.length);
-
-    this.addNewChar(
-      this.lettersRight,
-      rightIdx,
-      this.lettersLeft,
-      leftIdx + 1,
-      character
-    );
-  }
   onNewCharFromPivot($event) {
     // this.pivotIsWorking=true;
     this.addNewChar(
@@ -180,14 +181,14 @@ export class PalindromEditorComponent implements OnInit {
       return idx1;
   }
 
-  getNodeIfLetterBox(currElement) {
-    var nextElement = currElement.nextSibling;
-    var nextNode =
-      nextElement && nextElement.nodeName === this.letterBoxElement
-        ? nextElement
-        : "null";
-    return Promise.resolve(nextNode);
-  }
+  // getNodeIfLetterBox(currElement) {
+  //   var nextElement = currElement.nextSibling;
+  //   var nextNode =
+  //     nextElement && nextElement.nodeName === charElements.LetterBoxElement
+  //       ? nextElement
+  //       : "null";
+  //   return Promise.resolve(nextNode);
+  // }
 
   focusOnNextPreviousElement(side: Direction, id, waitForIt, backOrForward, arrLength=null) {
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
@@ -203,7 +204,6 @@ export class PalindromEditorComponent implements OnInit {
       }, 100);
     } else return false;
   }
-  calculateWheretoDeleteFromOtherSide() {}
 
 
 

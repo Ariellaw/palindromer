@@ -1,2 +1,2 @@
 <!-- <input type="text" maxlength="2" [value]="letter" size=1 (input)="onUserInput($event.target.value)"/> -->
-<input (click)="expand()" id="pivot-input" [ngClass]="(pivotIsCollapsed)?'collapsed':'expanded'" class="pivot-box btn" type="text" maxlength="2" [(ngModel)]="input"  (keyup)="onUserInput($event)"/>
+<input (click)="expand()" id="pivot-input" [ngClass]="(pivotIsCollapsed)?'collapsed':'expanded'" class="pivot-box basic-char-box" type="text" maxlength="2" [(ngModel)]="input"  (keyup)="onUserInput($event)"/>
