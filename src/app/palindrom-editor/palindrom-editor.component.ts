@@ -307,7 +307,7 @@ export class PalindromEditorComponent implements OnInit {
         }
         if (lettersBeforeTargetCell === 0) {
           arr1.splice(j, 0, newChar);
-git          return;
+          return;
         }
       }
     } else if (!isLetterNew && isLetterOld) {

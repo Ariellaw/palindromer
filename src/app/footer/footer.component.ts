@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ServicesService } from "../common/services/services";
 
 @Component({
   selector: 'app-footer',
@@ -6,14 +7,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
-  screenwidth:number;
   @Input() isRightToLeft;
   @Output() changeScreenDirection = new EventEmitter<{isRightToLeft:boolean}>();
 
-  constructor() { }
+  constructor(private services: ServicesService) {}
 
   ngOnInit() {
-    this.screenwidth=window.innerWidth;
   }
 
   switchScreenDirection(isRighToLeft){

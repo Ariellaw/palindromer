@@ -13,6 +13,8 @@ export class ServicesService {
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
+  screenwidth:number;
+
 
   constructor() {}
 
@@ -22,4 +24,11 @@ export class ServicesService {
       character.match(this.hebrewLettersRegex)
     );
   }
+
+  getScreenWidth(){
+    this.screenwidth=window.innerWidth;
+    return window.innerWidth;
+  }
+  
+
 }
