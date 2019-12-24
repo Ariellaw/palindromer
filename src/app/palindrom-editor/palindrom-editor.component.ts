@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import {ServicesService} from '../common/services/services';
-import {Direction} from '../common/services/services';
-
+import { ServicesService } from "../common/services/services";
+import { PalindromSection } from "../common/services/services";
 
 // enum charElements {
 //   LetterBoxElement = "APP-LETTER-BOX",
@@ -15,22 +14,28 @@ import {Direction} from '../common/services/services';
 })
 export class PalindromEditorComponent implements OnInit {
   lettersLeft = ["t", "!", "a", "c"];
-  lettersRight = ["c", "@", "a"," " ,"t"];
+  lettersRight = ["c", "@", "a", " ", "t"];
   pivotElement: HTMLElement;
- 
 
   constructor(private services: ServicesService) {}
 
   ngOnInit() {
-    this.pivotElement = document.getElementById(Direction.Pivot) as HTMLElement;
+    this.pivotElement = document.getElementById(PalindromSection.Pivot) as HTMLElement;
     this.pivotElement.focus();
   }
 
   onAddCharRight($event) {
+    console.log("onAddCharRight",$event)
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
-    this.focusOnNextPreviousElement(Direction.Right, rightIdx, true, 1, this.lettersRight.length);
+    this.focusOnNextPreviousElement(
+      PalindromSection.Right,
+      rightIdx,
+      true,
+      1,
+      this.lettersRight.length
+    );
     this.addNewChar(
       this.lettersLeft,
       leftIdx,
@@ -41,11 +46,18 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onAddCharLeft($event) {
+    console.log("onAddCharLeft",$event)
 
     let character = $event.character;
     let leftIdx = $event.letterIndex;
     let rightIdx = this.lettersLeft.length - 1 - leftIdx;
-    this.focusOnNextPreviousElement(Direction.Left, leftIdx, true, 1, this.lettersLeft.length);
+    this.focusOnNextPreviousElement(
+      PalindromSection.Left,
+      leftIdx,
+      true,
+      1,
+      this.lettersLeft.length
+    );
 
     this.addNewChar(
       this.lettersRight,
@@ -55,16 +67,35 @@ export class PalindromEditorComponent implements OnInit {
       character
     );
   }
-  onCharacterChangedRight($event: {prevChar: string; newChar:string; letterIndex: number}) {
-    this.replaceLetter(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.prevChar, $event.newChar);
-
+  onCharacterChangedRight($event: {
+    prevChar: string;
+    newChar: string;
+    letterIndex: number;
+  }) {
+    this.replaceLetter(
+      this.lettersLeft,
+      this.lettersRight,
+      $event.letterIndex,
+      $event.prevChar,
+      $event.newChar,
+      PalindromSection.Right
+    );
   }
 
-  onCharacterChangedLeft($event: {prevChar: string; newChar:string; letterIndex: number}) {
-    this.replaceLetter(this.lettersRight, this.lettersLeft, $event.letterIndex,  $event.prevChar, $event.newChar);
-
+  onCharacterChangedLeft($event: {
+    prevChar: string;
+    newChar: string;
+    letterIndex: number;
+  }) {
+    this.replaceLetter(
+      this.lettersRight,
+      this.lettersLeft,
+      $event.letterIndex,
+      $event.prevChar,
+      $event.newChar,
+      PalindromSection.Left
+    );
   }
-
 
   onNewCharFromPivot($event) {
     // this.pivotIsWorking=true;
@@ -77,108 +108,122 @@ export class PalindromEditorComponent implements OnInit {
     );
   }
 
-
-
-
-
-  moveFocus($event: { keyCode: number; side: Direction; letterIdx: number }) {
+  moveFocus($event: { keyCode: number; side: PalindromSection; letterIdx: number }) {
     if ($event.keyCode === 39) {
       this.moveFocusRight($event.side, $event.letterIdx);
-    }else {
+    } else {
       this.moveFocusLeft($event.side, $event.letterIdx);
-
     }
-
   }
 
   /*HELPERFUNCTIONS */
 
-  moveFocusRight(side, letterIdx){
+  moveFocusRight(side, letterIdx) {
     if (
-      side === Direction.Right &&
-      letterIdx === this.lettersRight.length-1
+      side === PalindromSection.Right &&
+      letterIdx === this.lettersRight.length - 1
     ) {
       document.getElementById("left0").focus();
     } else if (
-      side === Direction.Left &&
-      letterIdx === this.lettersLeft.length-1
+      side === PalindromSection.Left &&
+      letterIdx === this.lettersLeft.length - 1
     ) {
       this.pivotElement.focus();
-    } else if (side === Direction.Pivot) {
+    } else if (side === PalindromSection.Pivot) {
       document.getElementById("right0").focus();
     } else {
       this.focusOnNextPreviousElement(side, letterIdx, false, 1);
     }
   }
-  moveFocusLeft(side: Direction, letterIdx){
+  moveFocusLeft(side: PalindromSection, letterIdx) {
     if (
-      side === Direction.Left &&
-      letterIdx === 0 && this.lettersRight.length>0
+      side === PalindromSection.Left &&
+      letterIdx === 0 &&
+      this.lettersRight.length > 0
     ) {
-      document.getElementById(`${Direction.Right}${this.lettersRight.length-1}`).focus();
-    } else if (
-      side === Direction.Right &&
-      letterIdx === 0
-    ) {
+      document
+        .getElementById(`${PalindromSection.Right}${this.lettersRight.length - 1}`)
+        .focus();
+    } else if (side === PalindromSection.Right && letterIdx === 0) {
       this.pivotElement.focus();
-    } else if (side === Direction.Pivot) {
-      document.getElementById(`${Direction.Left}${this.lettersLeft.length-1}`).focus();
-    } else if(this.lettersRight.length>0 && this.lettersLeft.length>0) {
+    } else if (side === PalindromSection.Pivot) {
+      document
+        .getElementById(`${PalindromSection.Left}${this.lettersLeft.length - 1}`)
+        .focus();
+    } else if (this.lettersRight.length > 0 && this.lettersLeft.length > 0) {
       this.focusOnNextPreviousElement(side, letterIdx, false, -1);
-    }
-    else{
+    } else {
       this.pivotElement.focus();
     }
   }
 
   onBackspaceLeft($event: { letterIndex: number; character: string }) {
-    this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
-    this.moveFocusLeft(Direction.Left, $event.letterIndex)
+    this.deleteChar(
+      this.lettersRight,
+      this.lettersLeft,
+      $event.letterIndex,
+      $event.character
+    );
+    this.moveFocusLeft(PalindromSection.Left, $event.letterIndex);
   }
 
   onBackspaceRight($event: { letterIndex: number; character: string }) {
-
-    this.deleteChar(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.character);
-    this.moveFocusLeft(Direction.Right, $event.letterIndex);
+    this.deleteChar(
+      this.lettersLeft,
+      this.lettersRight,
+      $event.letterIndex,
+      $event.character
+    );
+    this.moveFocusLeft(PalindromSection.Right, $event.letterIndex);
   }
-  deleteRight($event: { letterIndex: number; character: string }){
-    this.deleteChar(this.lettersLeft, this.lettersRight, $event.letterIndex, $event.character);
-    this.moveFocusRight(Direction.Right, $event.letterIndex);
-
-
+  deleteRight($event: { letterIndex: number; character: string }) {
+    this.deleteChar(
+      this.lettersLeft,
+      this.lettersRight,
+      $event.letterIndex,
+      $event.character
+    );
+    this.moveFocusRight(PalindromSection.Right, $event.letterIndex);
   }
 
-  deleteLeft($event: { letterIndex: number; character: string }){
-    this.deleteChar(this.lettersRight, this.lettersLeft, $event.letterIndex, $event.character);
-    this.moveFocusRight(Direction.Left, $event.letterIndex);
+  deleteLeft($event: { letterIndex: number; character: string }) {
+    this.deleteChar(
+      this.lettersRight,
+      this.lettersLeft,
+      $event.letterIndex,
+      $event.character
+    );
+    this.moveFocusRight(PalindromSection.Left, $event.letterIndex);
   }
-  deleteFromPivot(){
-    if(this.lettersRight.length>0){
-      this.deleteChar(this.lettersLeft, this.lettersRight, 0 , this.lettersRight[0]);
+  deleteFromPivot() {
+    if (this.lettersRight.length > 0) {
+      this.deleteChar(
+        this.lettersLeft,
+        this.lettersRight,
+        0,
+        this.lettersRight[0]
+      );
       this.pivotElement.focus();
     }
   }
 
-  backspaceFromPivot(){
-    if(this.lettersLeft.length>0){
-      this.deleteChar(this.lettersRight, this.lettersLeft, this.lettersLeft.length-1, this.lettersLeft[this.lettersLeft.length-1]);
+  backspaceFromPivot() {
+    if (this.lettersLeft.length > 0) {
+      this.deleteChar(
+        this.lettersRight,
+        this.lettersLeft,
+        this.lettersLeft.length - 1,
+        this.lettersLeft[this.lettersLeft.length - 1]
+      );
       this.pivotElement.focus();
     }
   }
 
-  getIdxFromLetterOnOtherSide(deletedLetter, arr1, arr2, idx2  ){
-      var letterIdx = this.countLetterUntilIndex(
-        idx2,
-        deletedLetter,
-        arr2
-      );
+  getIdxFromLetterOnOtherSide(deletedLetter, arr1, arr2, idx2) {
+    var letterIdx = this.countLetterUntilIndex(idx2, deletedLetter, arr2);
 
-      var idx1 = this.findIndexOnOppositeSide(
-        arr1,
-        deletedLetter,
-        letterIdx
-      );
-      return idx1;
+    var idx1 = this.findIndexOnOppositeSide(arr1, deletedLetter, letterIdx);
+    return idx1;
   }
 
   // getNodeIfLetterBox(currElement) {
@@ -190,9 +235,15 @@ export class PalindromEditorComponent implements OnInit {
   //   return Promise.resolve(nextNode);
   // }
 
-  focusOnNextPreviousElement(side: Direction, id, waitForIt, backOrForward, arrLength=null) {
+  focusOnNextPreviousElement(
+    side: PalindromSection,
+    id,
+    waitForIt,
+    backOrForward,
+    arrLength = null
+  ) {
     var nextLetterBox = document.getElementById(side + (id + backOrForward));
-    if (nextLetterBox  && !waitForIt) {
+    if (nextLetterBox && !waitForIt) {
       nextLetterBox.focus();
     } else if (waitForIt) {
       var checkExist = setInterval(function() {
@@ -205,9 +256,8 @@ export class PalindromEditorComponent implements OnInit {
     } else return false;
   }
 
-
-
   addNewChar(arr1, idx1, arr2, idx2, newChar) {
+    console.log("addNewChar", arr1, idx1, arr2, idx2, newChar)
     var isLetter = this.services.isLetterVerification(newChar);
     if (isLetter) {
       arr1.splice(idx1, 0, newChar);
@@ -218,26 +268,47 @@ export class PalindromEditorComponent implements OnInit {
   deleteChar(arr1, arr2, idx2, newChar) {
     var isLetter = this.services.isLetterVerification(newChar);
     if (isLetter) {
-       var idx1 =this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
+      var idx1 = this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
       arr1.splice(idx1, 1);
-    }else{
+    } else {
     }
     arr2.splice(idx2, 1);
   }
 
-  replaceLetter(arr1, arr2, idx2, oldChar, newChar){
+  replaceLetter(arr1, arr2, idx2, oldChar, newChar, side) {
     var isLetterOld = this.services.isLetterVerification(oldChar);
     var isLetterNew = this.services.isLetterVerification(newChar);
     var idx1 = this.getIdxFromLetterOnOtherSide(oldChar, arr1, arr2, idx2);
 
-    if(isLetterOld && isLetterNew){
+    if (isLetterOld && isLetterNew) {
       arr1[idx1] = newChar;
       arr2[idx2] = newChar;
-    }else if(isLetterNew && !isLetterOld){
+    } else if (isLetterNew && !isLetterOld) {
+      arr2[idx2] = newChar;
+      var lettersPriorToChar = 0;
+      for (var i = 0; i < idx2; i++) {
+        if (this.services.isLetterVerification(arr2[i])) {
+          lettersPriorToChar++;
+        }
+        lettersPriorToChar++;
+        for (var j = arr1.length-1; j > 0; j--) {
+          if (this.services.isLetterVerification(arr1[j])) {
+            lettersPriorToChar--;
+          } 
+          if(lettersPriorToChar===0){
+            if(side===PalindromSection.Left){
+              arr1.splice(j-1,0,newChar);
+            }
+            console.log(j,idx2)
+            return;
+          }
+        }
+      }
+
       return;
-    }else if(!isLetterNew && isLetterOld){
-      arr2[idx2]=newChar;
-      arr1.splice(idx1,1);
+    } else if (!isLetterNew && isLetterOld) {
+      arr2[idx2] = newChar;
+      arr1.splice(idx1, 1);
     }
   }
   //both are letters
@@ -264,5 +335,4 @@ export class PalindromEditorComponent implements OnInit {
       }
     }
   }
-
 }

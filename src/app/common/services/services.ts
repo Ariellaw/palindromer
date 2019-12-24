@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-export enum Direction {
+export enum PalindromSection {
   Left = "left",
   Right = "right",
   Pivot = "pivot-input"

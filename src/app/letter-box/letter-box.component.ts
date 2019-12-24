@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
 import {ServicesService} from '../common/services/services';
-import {Direction} from '../common/services/services';
+import {PalindromSection} from '../common/services/services';
 
 enum charTypes  {
   Letter = "letter",
@@ -29,7 +29,7 @@ export class LetterBoxComponent implements OnInit {
     character: string;
   }>();
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
-  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:Direction, letterIdx:number }>();
+  @Output() moveFocus = new EventEmitter<{ keyCode: number, side:PalindromSection, letterIdx:number }>();
   @Output() characterAdded = new EventEmitter<{
     character: string;
     letterIndex: number;
@@ -47,9 +47,9 @@ export class LetterBoxComponent implements OnInit {
 
   handleKeyup(event: KeyboardEvent) {
     if (event.keyCode === 37 || event.keyCode === 39) {
-      var side:Direction;
-      if(this.side===Direction.Right){side = Direction.Right}
-      else if(this.side === Direction.Left){side = Direction.Left}
+      var side:PalindromSection;
+      if(this.side===PalindromSection.Right){side = PalindromSection.Right}
+      else if(this.side === PalindromSection.Left){side = PalindromSection.Left}
       this.moveFocus.emit({ keyCode: event.keyCode, side, letterIdx:this.index });
     } else if (event.keyCode === 8) {
       event.preventDefault();
@@ -66,6 +66,7 @@ export class LetterBoxComponent implements OnInit {
       return;
     }
      else if(this.character.length===2){
+       console.log("letterbox", this.character, this.index)
       this.characterAdded.emit({
         character: this.character.charAt(1),
         letterIndex: this.index

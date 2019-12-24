@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { ServicesService } from "../common/services/services";
-import { Direction } from "../common/services/services";
+import { PalindromSection } from "../common/services/services";
 
 @Component({
   selector: "app-pivot-letter",
@@ -13,7 +13,7 @@ export class PivotLetterComponent implements OnInit {
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
   @Output() moveFocus = new EventEmitter<{
     keyCode: number;
-    side: Direction;
+    side: PalindromSection;
     letterIdx: number;
   }>();
   @Output() backspace = new EventEmitter<void>();
@@ -38,7 +38,7 @@ export class PivotLetterComponent implements OnInit {
     } else if (event.keyCode === 37 || event.keyCode === 39) {
       this.moveFocus.emit({
         keyCode: event.keyCode,
-        side: Direction.Pivot,
+        side: PalindromSection.Pivot,
         letterIdx: -1
       });
     } else if (event.keyCode === 8 || event.keyCode === 46) {

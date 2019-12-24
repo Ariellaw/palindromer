@@ -1,11 +1,11 @@
+@import '../../scss/variables.scss';
+@import '../../scss/variables.scss';
+
 .footer{
-    background-color: #e4cb7d;
-    border-top: 3px solid #7dd3e4;;
-    background-color: #e4cb7d;
+    border-top: 3px solid $emphasis_blue;
     height: 10rem;
     width: 100vw;
     position: absolute;
     bottom: 0;
-    display:flex;
-    flex-direction: row;
+
 }
