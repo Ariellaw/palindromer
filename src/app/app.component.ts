@@ -14,10 +14,8 @@ export class AppComponent implements OnInit{
   }
 
   ngOnChanges(event){
-    console.log("changes", event, "isRightToLeft", this.isRightToLeft)
   }
   changeScreenDirection(event){
-    console.log("changeScreenDirection", event);
     this.isRightToLeft = event.isRightToLeft;
   }
 }

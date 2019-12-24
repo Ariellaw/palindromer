@@ -66,7 +66,6 @@ export class LetterBoxComponent implements OnInit {
       return;
     }
      else if(this.character.length===2){
-       console.log("letterbox", this.character, this.index)
       this.characterAdded.emit({
         character: this.character.charAt(1),
         letterIndex: this.index

@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit {
   }
 
   switchScreenDirection(isRighToLeft){
-    console.log("switchScreenDirection", isRighToLeft)
     this.changeScreenDirection.emit({isRightToLeft:isRighToLeft});
 
   }
