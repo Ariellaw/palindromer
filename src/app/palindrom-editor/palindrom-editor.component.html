@@ -1,5 +1,4 @@
-<div>
- 
+<div  [ngClass]="{'rtl':isRightToLeft}">
     <div class="palindrom-container" id="palindrom-container">
         <app-letter-box (moveFocus)="moveFocus($event)" (backspace)="onBackspaceLeft($event)"
             *ngFor="let currLetter of lettersLeft ; let i = index" side="left" [character]="currLetter" [index]="i"
@@ -12,4 +11,8 @@
             (characterAdded)="onAddCharRight($event)" (characterChanged)="onCharacterChangedRight($event)" (delete)="deleteRight($event)">
         </app-letter-box>
     </div>
+        <button class="lngDirectionbtn" (click)="switchTextDirection(true)"  *ngIf="isRightToLeft===false">Switch to Right to Left</button>  
+    <button class="lngDirectionbtn" (click)="switchTextDirection(false)" *ngIf="isRightToLeft===true">Switch to Left to Right</button>  
 </div>
+
+<!-- (changeScreenDirection)=changeScreenDirection($event) [isRightToLeft]="isRightToLeft" -->

@@ -44,9 +44,14 @@ export class LetterBoxComponent implements OnInit {
     this.currChar = this.character;
   }
 
-
+//
   handleKeyup(event: KeyboardEvent) {
-    if (event.keyCode === 37 || event.keyCode === 39) {
+    if(event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
+      console.log("shift and arrowkey");
+
+      return;
+    }
+    else if (event.keyCode === 37 || event.keyCode === 39) {
       var side:PalindromSection;
       if(this.side===PalindromSection.Right){side = PalindromSection.Right}
       else if(this.side === PalindromSection.Left){side = PalindromSection.Left}

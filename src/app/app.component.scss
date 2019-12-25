@@ -2,10 +2,9 @@
 
 
 .main-container {
-  // width:90vw;
-  // border:1px solid $black;
+  width: 90%;
+  margin: auto;
   height: 100vh;
-  width: 100%;
   text-align: center;
 }
 
@@ -15,6 +14,3 @@
 }
 
 
-.rtl {
-  direction: rtl;
-}

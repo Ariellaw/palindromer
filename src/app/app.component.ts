@@ -6,16 +6,12 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  title = 'palindromer';
-  isRightToLeft: boolean;
+  // title = 'palindromer';
 
   ngOnInit() {
-    this.isRightToLeft = false;
   }
 
   ngOnChanges(event){
   }
-  changeScreenDirection(event){
-    this.isRightToLeft = event.isRightToLeft;
-  }
+ 
 }

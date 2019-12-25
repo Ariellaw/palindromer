@@ -13,6 +13,7 @@ export class FooterComponent implements OnInit {
   constructor(private services: ServicesService) {}
 
   ngOnInit() {
+    
   }
 
   switchScreenDirection(isRighToLeft){

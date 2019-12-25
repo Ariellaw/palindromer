@@ -2,10 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ServicesService } from "../common/services/services";
 import { PalindromSection } from "../common/services/services";
 
-// enum charElements {
-//   LetterBoxElement = "APP-LETTER-BOX",
-//   PivotElementNodeName = "APP-PIVOT-LETTER"
-// }
+
 
 @Component({
   selector: "app-palindrom-editor",
@@ -16,6 +13,7 @@ export class PalindromEditorComponent implements OnInit {
   lettersLeft = ["t", "!", "a", "c"];
   lettersRight = ["c", "@", "a", " ", "t"];
   pivotElement: HTMLElement;
+  isRightToLeft: boolean = false;
 
   constructor(private services: ServicesService) {}
 
@@ -24,8 +22,14 @@ export class PalindromEditorComponent implements OnInit {
       PalindromSection.Pivot
     ) as HTMLElement;
     this.pivotElement.focus();
+
+    this.services.setCompleteText("this is a completeText");
   }
 
+  switchTextDirection(isRightToLeft) {
+    this.isRightToLeft = isRightToLeft;
+    console.log("isRightToLeft", isRightToLeft);
+  }
   onAddCharRight($event) {
     let rightIdx = $event.letterIndex;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
@@ -233,14 +237,7 @@ export class PalindromEditorComponent implements OnInit {
     return idx1;
   }
 
-  // getNodeIfLetterBox(currElement) {
-  //   var nextElement = currElement.nextSibling;
-  //   var nextNode =
-  //     nextElement && nextElement.nodeName === charElements.LetterBoxElement
-  //       ? nextElement
-  //       : "null";
-  //   return Promise.resolve(nextNode);
-  // }
+
 
   focusOnNextPreviousElement(
     side: PalindromSection,
@@ -315,10 +312,7 @@ export class PalindromEditorComponent implements OnInit {
       arr1.splice(idx1, 1);
     }
   }
-  //both are letters
-  //letter replaced by punctuation
-  //puntuation replaced by letter
-  //
+
 
   countLetterUntilIndex(idx, letter, lettersArr) {
     let letterIdx = 0;

@@ -6,6 +6,7 @@ export enum PalindromSection {
   Pivot = "pivot-input"
 }
 
+
 @Injectable({
   providedIn: "root"
 })
@@ -14,7 +15,7 @@ export class ServicesService {
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
   screenwidth:number;
-
+  completeText:string= "";
 
   constructor() {}
 
@@ -25,10 +26,9 @@ export class ServicesService {
     );
   }
 
-  getScreenWidth(){
-    this.screenwidth=window.innerWidth;
-    return window.innerWidth;
+
+  setCompleteText(text){
+    this.completeText = text;
   }
-  
 
 }

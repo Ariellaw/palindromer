@@ -1,15 +1,29 @@
-@import '../../scss/variables.scss';
+@import "../../scss/variables.scss";
 
-
-.palindrom-container{
-    width: 80vw;
-    padding: 50px;
-    display: flex;
-    flex-wrap: wrap;
-    margin: auto;
-    border: 1px dotted #7DD3E4;
-    margin-top: 5rem;
-    padding: 1rem;
-    height: fit-content;
-    justify-content:center;
+.palindrom-container {
+  width: 80vw;
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  margin-top: 5rem;
+  padding: 1rem;
+  height: fit-content;
+  justify-content: center;
 }
+
+.rtl {
+  direction: rtl;
+}
+
+.lngDirectionbtn {
+  border-radius: 1rem;
+  background-color: #faf4e1;
+  font-size: 2rem;
+  height: 4rem;
+  border: 2px solid #a57fe8;
+  padding: 1rem;
+  float: right;
+  cursor: pointer;
+}
+
