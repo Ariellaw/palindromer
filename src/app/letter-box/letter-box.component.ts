@@ -43,70 +43,55 @@ export class LetterBoxComponent implements OnInit {
     character: string
   }>()
   @Output() replaceLetter = new EventEmitter<{
-    newChar:string
-    letterIdx:number,
+    newChar: string
+    letterIdx: number
     side: string
   }>()
-@Output() deletePreviousChar = new EventEmitter<{
-  letterIdx:number,
-  side:string
-}>()
-
+  @Output() deletePreviousNextChar = new EventEmitter<{
+    letterIdx: number
+    side: string
+  }>()
 
   constructor (private services: ServicesService) {}
 
   ngOnInit () {
     this.assignCharacterType()
-    this.currChar = this.character;
-    if(this.side === "left") {this.side = PalindromSection.Left}
-    else this.side = PalindromSection.Right
+    this.currChar = this.character
+    if (this.side === 'left') {
+      this.side = PalindromSection.Left
+    } else this.side = PalindromSection.Right
   }
 
   //
   handleKeyup (event: KeyboardEvent) {
     // var side: PalindromSection;
-    var currEl = event.target as HTMLInputElement;
-    var curserPosition = currEl.selectionStart
- 
+    var currEl = event.target as HTMLInputElement
+    var curserPosition = currEl.selectionStart;
+    console.log("curserPosition", curserPosition)
+
+
     // if (this.side === PalindromSection.Right) {
     //   side = PalindromSection.Right
     // } else if (this.side === PalindromSection.Left) {
     //   side = PalindromSection.Left
     // }
-      //37 & 39 are arrow keys
+    //37 & 39 are arrow keys
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
-      return;
+      return
     } else if (event.keyCode === 37 || event.keyCode === 39) {
-      if (this.currChar.length === 2) {
-        this.character = this.currChar.charAt(0)
-        this.currChar = this.currChar.charAt(0)
-        return;
+      if((curserPosition === this.character.length && event.keyCode === 39) ||(curserPosition===0 && event.keyCode===37)){
+        this.moveFocus.emit({
+          keyCode: event.keyCode,
+          side: this.side,
+          letterIdx: this.index
+        })
       }
 
-      this.moveFocus.emit({
-        keyCode: event.keyCode,
-        side: this.side,
-        letterIdx: this.index
-      })
       // 8 is backspace
     } else if (event.keyCode === 8) {
-        this.onBackSpace(curserPosition, this.side)
-      
-
+      this.onBackSpace(curserPosition, this.side)
     } else if (event.keyCode === 46) {
-      if(this.character.length==1){
-        this.replaceLetter.emit({
-          newChar:this.character,
-          letterIdx: this.index,
-          side:this.side
-        })
-        this.currChar = this.character;
-        return;
-      }
-      this.delete.emit({
-        letterIdx: this.index,
-        character: this.character
-      })
+      this.deleteChar(curserPosition, this.side)
     } else if (
       event.keyCode === 16 ||
       event.keyCode === 20 ||
@@ -141,36 +126,43 @@ export class LetterBoxComponent implements OnInit {
     }
   }
 
-  onBackSpace(curserPosition, side){
-    if(curserPosition===0 && this.character.length===0){
+  onBackSpace (curserPosition, side) {
+    if (curserPosition === 0 && this.character.length === 0) {
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar
       })
-    }else if(curserPosition===0 && this.character.length>=1 && this.index>0){
-      this.deletePreviousChar.emit({
-        letterIdx: this.index-1,
+    } else if (
+      curserPosition === 0 &&
+      this.character.length >= 1 &&
+      this.index > 0
+    ) {
+      this.deletePreviousNextChar.emit({
+        letterIdx: this.index - 1,
         side: this.side
       })
-    }else if(curserPosition !==0){
+    } else if (curserPosition !== 0) {
       this.replaceLetter.emit({
-        newChar:this.character,
+        newChar: this.character,
         letterIdx: this.index,
-        side:side
+        side: side
       })
-      this.currChar = this.character;
-      return; 
+      this.currChar = this.character
+      return
     }
+  }
+
+  deleteChar (curserPosition, side) {
+
   }
 
   getCaretPosition (currEl) {
     document.getElementById(currEl).addEventListener('keyup', e => {
       console.log('Caret at: ', e.target)
     })
-  }  
+  }
 
 }
-
 
 //TODO: read about preventDefault()
 //TODO: https://stackoverflow.com/questions/35105374/how-to-force-a-components-re-rendering-in-angular-2

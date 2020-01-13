@@ -26,8 +26,8 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   
-  onDeletePreviousChar($event){
-    console.log("onDeletePreviousChar", $event);
+  onDeletePreviousNextChar($event){
+    console.log("onDeletePreviousNextChar", $event);
     if($event.side === PalindromSection.Left){
       this.deleteChar(
         this.lettersRight,
