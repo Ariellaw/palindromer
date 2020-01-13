@@ -2,15 +2,14 @@ import { Component, OnInit } from "@angular/core";
 import { ServicesService } from "../common/services/services";
 import { PalindromSection } from "../common/services/services";
 
-
-
 @Component({
   selector: "app-palindrom-editor",
   templateUrl: "./palindrom-editor.component.html",
-  styleUrls: ["./palindrom-editor.component.scss"]
+  styleUrls: ["./palindrom-editor.component.scss"],
+  providers: [ServicesService]
 })
 export class PalindromEditorComponent implements OnInit {
-  lettersLeft = ["t",  "a", "c"];
+  lettersLeft = ["t", "a", "c"];
   lettersRight = ["c", "a", "t"];
   pivotElement: HTMLElement;
   isRightToLeft: boolean = false;
@@ -26,12 +25,30 @@ export class PalindromEditorComponent implements OnInit {
     this.services.setCompleteText("this is a completeText");
   }
 
+  
+  onDeletePreviousChar($event){
+    console.log("onDeletePreviousChar", $event);
+    if($event.side === PalindromSection.Left){
+      this.deleteChar(
+        this.lettersRight,
+        this.lettersLeft,
+        $event.letterIdx,
+        this.lettersLeft[$event.letterIdx],
+      );
+    } else{
+      this.deleteChar(
+        this.lettersLeft,
+        this.lettersRight,
+        $event.letterIdx,
+        this.lettersRight[$event.letterIdx],
+      );
+    }
+  }
   switchTextDirection(isRightToLeft) {
     this.isRightToLeft = isRightToLeft;
-    console.log("isRightToLeft", isRightToLeft);
   }
   onAddCharRight($event) {
-    let rightIdx = $event.letterIndex;
+    let rightIdx = $event.letterIdx;
     let leftIdx = this.lettersRight.length - 1 - rightIdx;
     let character = $event.character;
     this.focusOnNextPreviousElement(
@@ -52,7 +69,7 @@ export class PalindromEditorComponent implements OnInit {
 
   onAddCharLeft($event) {
     let character = $event.character;
-    let leftIdx = $event.letterIndex;
+    let leftIdx = $event.letterIdx;
     let rightIdx = this.lettersLeft.length - 1 - leftIdx;
     this.focusOnNextPreviousElement(
       PalindromSection.Left,
@@ -73,28 +90,28 @@ export class PalindromEditorComponent implements OnInit {
   onCharacterChangedRight($event: {
     prevChar: string;
     newChar: string;
-    letterIndex: number;
+    letterIdx: number;
   }) {
     this.replaceLetter(
       this.lettersLeft,
       this.lettersRight,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.prevChar,
-      $event.newChar,
+      $event.newChar
     );
   }
 
   onCharacterChangedLeft($event: {
     prevChar: string;
     newChar: string;
-    letterIndex: number;
+    letterIdx: number;
   }) {
     this.replaceLetter(
       this.lettersRight,
       this.lettersLeft,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.prevChar,
-      $event.newChar,
+      $event.newChar
     );
   }
 
@@ -133,7 +150,6 @@ export class PalindromEditorComponent implements OnInit {
       side === PalindromSection.Left &&
       letterIdx === this.lettersLeft.length - 1
     ) {
-      console.log("this is the reason")
       this.pivotElement.focus();
     } else if (side === PalindromSection.Pivot) {
       document.getElementById("right0").focus();
@@ -142,7 +158,6 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   moveFocusLeft(side: PalindromSection, letterIdx) {
-    console.log("move focus", side, letterIdx)
     if (
       side === PalindromSection.Left &&
       letterIdx === 0 &&
@@ -154,7 +169,6 @@ export class PalindromEditorComponent implements OnInit {
         )
         .focus();
     } else if (side === PalindromSection.Right && letterIdx === 0) {
-      console.log("go to pivot",letterIdx )
       this.pivotElement.focus();
     } else if (side === PalindromSection.Pivot) {
       document
@@ -165,52 +179,51 @@ export class PalindromEditorComponent implements OnInit {
     } else if (this.lettersRight.length > 0 || this.lettersLeft.length > 0) {
       this.focusOnNextPreviousElement(side, letterIdx, false, -1);
     } else {
-      console.log("else")
       this.pivotElement.focus();
     }
   }
 
-  onBackspaceLeft($event: { letterIndex: number; character: string }) {
+  onBackspaceLeft($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersRight,
       this.lettersLeft,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.character
     );
-    if($event.letterIndex===0 && this.lettersLeft.length>=1){
+    if ($event.letterIdx === 0 && this.lettersLeft.length >= 1) {
       document.getElementById("left1").focus();
       return;
     }
-    this.moveFocusLeft(PalindromSection.Left, $event.letterIndex);
+    this.moveFocusLeft(PalindromSection.Left, $event.letterIdx);
   }
 
-  onBackspaceRight($event: { letterIndex: number; character: string }) {
+  onBackspaceRight($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersLeft,
       this.lettersRight,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.character
     );
-    this.moveFocusLeft(PalindromSection.Right, $event.letterIndex);
+    this.moveFocusLeft(PalindromSection.Right, $event.letterIdx);
   }
-  deleteRight($event: { letterIndex: number; character: string }) {
+  deleteRight($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersLeft,
       this.lettersRight,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.character
     );
-    this.moveFocusRight(PalindromSection.Right, $event.letterIndex);
+    this.moveFocusRight(PalindromSection.Right, $event.letterIdx);
   }
 
-  deleteLeft($event: { letterIndex: number; character: string }) {
+  deleteLeft($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersRight,
       this.lettersLeft,
-      $event.letterIndex,
+      $event.letterIdx,
       $event.character
     );
-    this.moveFocusRight(PalindromSection.Left, $event.letterIndex);
+    this.moveFocusRight(PalindromSection.Left, $event.letterIdx);
   }
   deleteFromPivot() {
     if (this.lettersRight.length > 0) {
@@ -243,8 +256,6 @@ export class PalindromEditorComponent implements OnInit {
     return idx1;
   }
 
-
-
   focusOnNextPreviousElement(
     side: PalindromSection,
     id,
@@ -275,31 +286,36 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   deleteChar(arr1, arr2, idx2, newChar) {
-    console.log("delete Char", arr1, arr2, idx2, newChar)
     var isLetter = this.services.isLetterVerification(newChar);
     if (isLetter) {
       var idx1 = this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
       arr1.splice(idx1, 1);
-    } else {
-    }
+    } 
     arr2.splice(idx2, 1);
   }
-  onEdit($event){
-    console.log("on edit")
-    var side = $event.side
-    if(side === PalindromSection.Right){
-      this.replaceLetter(this.lettersLeft, this.lettersRight,  $event.letterIdx, "k", $event.newChar);
-      
-    }else if(side === PalindromSection.Left){
-      this.replaceLetter(this.lettersRight, this.lettersLeft, $event.letterIdx, "k", $event.newChar);
+  onEdit($event) {
+    var side = $event.side;
+    if (side === PalindromSection.Right) {
+      this.replaceLetter(
+        this.lettersLeft,
+        this.lettersRight,
+        $event.letterIdx,
+        "k",
+        $event.newChar
+      );
+    } else if (side === PalindromSection.Left) {
+      this.replaceLetter(
+        this.lettersRight,
+        this.lettersLeft,
+        $event.letterIdx,
+        "k",
+        $event.newChar
+      );
     }
-    var el = document.getElementById(side+$event.letterIdx);
-    console.log(el);
+    var el = document.getElementById(side + $event.letterIdx);
     el.focus();
-
   }
   replaceLetter(arr1, arr2, idx2, oldChar, newChar) {
-    console.log("replaceLetter", arr1, arr2, idx2, oldChar, newChar)
     var isLetterOld = this.services.isLetterVerification(oldChar);
     var isLetterNew = this.services.isLetterVerification(newChar);
     var idx1 = this.getIdxFromLetterOnOtherSide(oldChar, arr1, arr2, idx2);
@@ -333,7 +349,6 @@ export class PalindromEditorComponent implements OnInit {
       arr1.splice(idx1, 1);
     }
   }
-
 
   countLetterUntilIndex(idx, letter, lettersArr) {
     let letterIdx = 0;

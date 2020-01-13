@@ -22,24 +22,24 @@ export class LetterBoxComponent implements OnInit {
   @Output() characterChanged = new EventEmitter<{
     prevChar: string
     newChar: string
-    letterIndex: number
+    letterIdx: number
   }>()
   @Output() backspace = new EventEmitter<{
-    letterIndex: number
+    letterIdx: number
     character: string
   }>()
   @Output() newUserInput = new EventEmitter<{ newLetter: string }>()
   @Output() moveFocus = new EventEmitter<{
     keyCode: number
-    side: PalindromSection
+    side: string
     letterIdx: number
   }>()
   @Output() characterAdded = new EventEmitter<{
     character: string
-    letterIndex: number
+    letterIdx: number
   }>()
   @Output() delete = new EventEmitter<{
-    letterIndex: number
+    letterIdx: number
     character: string
   }>()
   @Output() replaceLetter = new EventEmitter<{
@@ -47,7 +47,10 @@ export class LetterBoxComponent implements OnInit {
     letterIdx:number,
     side: string
   }>()
-
+@Output() deletePreviousChar = new EventEmitter<{
+  letterIdx:number,
+  side:string
+}>()
 
 
   constructor (private services: ServicesService) {}
@@ -55,62 +58,53 @@ export class LetterBoxComponent implements OnInit {
   ngOnInit () {
     this.assignCharacterType()
     this.currChar = this.character;
+    if(this.side === "left") {this.side = PalindromSection.Left}
+    else this.side = PalindromSection.Right
   }
 
   //
   handleKeyup (event: KeyboardEvent) {
-    var side: PalindromSection;
-    this.currChar = this.character;
-    var currEl = document.getElementById(side+this.index)
-
-    if (this.side === PalindromSection.Right) {
-      side = PalindromSection.Right
-    } else if (this.side === PalindromSection.Left) {
-      side = PalindromSection.Left
-    }
-
+    // var side: PalindromSection;
+    var currEl = event.target as HTMLInputElement;
+    var curserPosition = currEl.selectionStart
+ 
+    // if (this.side === PalindromSection.Right) {
+    //   side = PalindromSection.Right
+    // } else if (this.side === PalindromSection.Left) {
+    //   side = PalindromSection.Left
+    // }
+      //37 & 39 are arrow keys
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
-      return
+      return;
     } else if (event.keyCode === 37 || event.keyCode === 39) {
       if (this.currChar.length === 2) {
         this.character = this.currChar.charAt(0)
         this.currChar = this.currChar.charAt(0)
-        return
+        return;
       }
 
       this.moveFocus.emit({
         keyCode: event.keyCode,
-        side,
+        side: this.side,
         letterIdx: this.index
       })
+      // 8 is backspace
     } else if (event.keyCode === 8) {
-      if(this.character.length==1){
-        console.log(this.currChar, this.doGetCaretPosition(currEl));
-        this.replaceLetter.emit({
-          newChar:this.character,
-          letterIdx: this.index,
-          side:side
-        })
-        this.currChar = this.character;
-        return;
-      }
-      this.backspace.emit({
-        letterIndex: this.index,
-        character: this.currChar
-      })
+        this.onBackSpace(curserPosition, this.side)
+      
+
     } else if (event.keyCode === 46) {
       if(this.character.length==1){
-        console.log(this.currChar, this.doGetCaretPosition(currEl));
         this.replaceLetter.emit({
           newChar:this.character,
           letterIdx: this.index,
-          side:side
+          side:this.side
         })
         this.currChar = this.character;
         return;
       }
       this.delete.emit({
-        letterIndex: this.index,
+        letterIdx: this.index,
         character: this.character
       })
     } else if (
@@ -123,14 +117,14 @@ export class LetterBoxComponent implements OnInit {
     } else if (this.character.length === 2) {
       this.characterAdded.emit({
         character: this.character.charAt(1),
-        letterIndex: this.index
+        letterIdx: this.index
       })
       this.character = this.character.charAt(0)
     } else if (this.character.length === 1) {
       this.characterChanged.emit({
         prevChar: this.currChar,
         newChar: this.character,
-        letterIndex: this.index
+        letterIdx: this.index
       })
       this.currChar = this.character
     }
@@ -147,33 +141,32 @@ export class LetterBoxComponent implements OnInit {
     }
   }
 
-  doGetCaretPosition (oField) {
+  onBackSpace(curserPosition, side){
+    if(curserPosition===0 && this.character.length===0){
+      this.backspace.emit({
+        letterIdx: this.index,
+        character: this.currChar
+      })
+    }else if(curserPosition===0 && this.character.length>=1 && this.index>0){
+      this.deletePreviousChar.emit({
+        letterIdx: this.index-1,
+        side: this.side
+      })
+    }else if(curserPosition !==0){
+      this.replaceLetter.emit({
+        newChar:this.character,
+        letterIdx: this.index,
+        side:side
+      })
+      this.currChar = this.character;
+      return; 
+    }
+  }
 
-    // Initialize
-    var iCaretPos = 0;
-  
-    // // IE Support
-    // if (document.selection) {
-  
-    //   // Set focus on the element
-    //   oField.focus();
-  
-    //   // To get cursor position, get empty selection range
-    //   var oSel = document.selection.createRange();
-  
-    //   // Move selection start to 0 position
-    //   oSel.moveStart('character', -oField.value.length);
-  
-    //   // The caret position is selection length
-    //   iCaretPos = oSel.text.length;
-    // }
-  
-    // Firefox support
-    //  if (oField.selectionStart || oField.selectionStart == '0')
-    //   iCaretPos = oField.selectionDirection=='backward' ? oField.selectionStart : oField.selectionEnd;
-  
-    // Return results
-    return iCaretPos;
+  getCaretPosition (currEl) {
+    document.getElementById(currEl).addEventListener('keyup', e => {
+      console.log('Caret at: ', e.target)
+    })
   }  
 
 }
