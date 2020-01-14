@@ -25,22 +25,38 @@ export class PalindromEditorComponent implements OnInit {
     this.services.setCompleteText("this is a completeText");
   }
 
-  
-  onDeletePreviousNextChar($event){
-    console.log("onDeletePreviousNextChar", $event);
-    if($event.side === PalindromSection.Left){
+  onDeleteNextChar($event) {
+    if ($event.side === PalindromSection.Left) {
       this.deleteChar(
         this.lettersRight,
         this.lettersLeft,
         $event.letterIdx,
-        this.lettersLeft[$event.letterIdx],
+        this.lettersLeft[$event.letterIdx]
       );
-    } else{
+    } else {
       this.deleteChar(
         this.lettersLeft,
         this.lettersRight,
         $event.letterIdx,
-        this.lettersRight[$event.letterIdx],
+        this.lettersRight[$event.letterIdx]
+      );
+    }
+  }
+
+  onDeletePreviousChar($event) {
+    if ($event.side === PalindromSection.Left) {
+      this.deleteChar(
+        this.lettersRight,
+        this.lettersLeft,
+        $event.letterIdx,
+        this.lettersLeft[$event.letterIdx]
+      );
+    } else {
+      this.deleteChar(
+        this.lettersLeft,
+        this.lettersRight,
+        $event.letterIdx,
+        this.lettersRight[$event.letterIdx]
       );
     }
   }
@@ -286,12 +302,19 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   deleteChar(arr1, arr2, idx2, newChar) {
-    var isLetter = this.services.isLetterVerification(newChar);
-    if (isLetter) {
-      var idx1 = this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
-      arr1.splice(idx1, 1);
-    } 
-    arr2.splice(idx2, 1);
+    var idx2Exists = this.verifyIdx(arr2, idx2);
+
+    if (idx2Exists) {
+      var isLetter = this.services.isLetterVerification(newChar);
+      if (isLetter) {
+        var idx1 = this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2);
+        var idx1Exists = this.verifyIdx(arr1, idx1);
+        if (idx1Exists) {
+          arr1.splice(idx1, 1);
+        }
+      }
+      arr2.splice(idx2, 1);
+    }
   }
   onEdit($event) {
     var side = $event.side;
@@ -368,5 +391,9 @@ export class PalindromEditorComponent implements OnInit {
         return i;
       }
     }
+  }
+
+  verifyIdx(arr, idx) {
+    return idx < arr.length;
   }
 }

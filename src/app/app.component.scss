@@ -3,9 +3,16 @@
 
 .main-container {
   width: 90%;
-  margin: auto;
-  height: 100vh;
+  height: 80vh;
   text-align: center;
+  top: 10rem;
+  position: absolute;
+  padding: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display:inline-block;
+  transform: translate(-50%);
+
 }
 
 

@@ -1,74 +1,76 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core'
-import { ServicesService } from '../common/services/services'
-import { PalindromSection } from '../common/services/services'
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
+import { ServicesService } from "../common/services/services";
+import { PalindromSection } from "../common/services/services";
 
 enum charTypes {
-  Letter = 'letter',
-  Punctuation = 'punctuation',
-  Space = 'space'
+  Letter = "letter",
+  Punctuation = "punctuation",
+  Space = "space"
 }
 
 @Component({
-  selector: 'app-letter-box',
-  templateUrl: './letter-box.component.html',
-  styleUrls: ['./letter-box.component.scss']
+  selector: "app-letter-box",
+  templateUrl: "./letter-box.component.html",
+  styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
-  currChar: string = ''
-  typeOfChar: charTypes = charTypes.Letter
-  @Input() character: string = ''
-  @Input() side: string = ''
-  @Input() index: number //TODO: should a letterbox be aware of its index? maybe there's another solution?
+  currChar: string = "";
+  typeOfChar: charTypes = charTypes.Letter;
+  @Input() character: string = "";
+  @Input() side: string = "";
+  @Input() index: number; //TODO: should a letterbox be aware of its index? maybe there's another solution?
   @Output() characterChanged = new EventEmitter<{
-    prevChar: string
-    newChar: string
-    letterIdx: number
-  }>()
+    prevChar: string;
+    newChar: string;
+    letterIdx: number;
+  }>();
   @Output() backspace = new EventEmitter<{
-    letterIdx: number
-    character: string
-  }>()
-  @Output() newUserInput = new EventEmitter<{ newLetter: string }>()
+    letterIdx: number;
+    character: string;
+  }>();
+  @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
   @Output() moveFocus = new EventEmitter<{
-    keyCode: number
-    side: string
-    letterIdx: number
-  }>()
+    keyCode: number;
+    side: string;
+    letterIdx: number;
+  }>();
   @Output() characterAdded = new EventEmitter<{
-    character: string
-    letterIdx: number
-  }>()
+    character: string;
+    letterIdx: number;
+  }>();
   @Output() delete = new EventEmitter<{
-    letterIdx: number
-    character: string
-  }>()
+    letterIdx: number;
+    character: string;
+  }>();
   @Output() replaceLetter = new EventEmitter<{
-    newChar: string
-    letterIdx: number
-    side: string
-  }>()
-  @Output() deletePreviousNextChar = new EventEmitter<{
-    letterIdx: number
-    side: string
-  }>()
+    newChar: string;
+    letterIdx: number;
+    side: string;
+  }>();
+  @Output() deletePreviousChar = new EventEmitter<{
+    letterIdx: number;
+    side: string;
+  }>();
+  @Output() deleteNextChar = new EventEmitter<{
+    letterIdx: number;
+    side: string;
+  }>();
+  constructor(private services: ServicesService) {}
 
-  constructor (private services: ServicesService) {}
-
-  ngOnInit () {
-    this.assignCharacterType()
-    this.currChar = this.character
-    if (this.side === 'left') {
-      this.side = PalindromSection.Left
-    } else this.side = PalindromSection.Right
+  ngOnInit() {
+    this.assignCharacterType();
+    this.currChar = this.character;
+    if (this.side === "left") {
+      this.side = PalindromSection.Left;
+    } else this.side = PalindromSection.Right;
   }
 
   //
-  handleKeyup (event: KeyboardEvent) {
+  handleKeyup(event: KeyboardEvent) {
     // var side: PalindromSection;
-    var currEl = event.target as HTMLInputElement
+    var currEl = event.target as HTMLInputElement;
     var curserPosition = currEl.selectionStart;
-    console.log("curserPosition", curserPosition)
-
+    console.log("handleKeyup curserPosition", curserPosition);
 
     // if (this.side === PalindromSection.Right) {
     //   side = PalindromSection.Right
@@ -77,89 +79,103 @@ export class LetterBoxComponent implements OnInit {
     // }
     //37 & 39 are arrow keys
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
-      return
+      return;
     } else if (event.keyCode === 37 || event.keyCode === 39) {
-      if((curserPosition === this.character.length && event.keyCode === 39) ||(curserPosition===0 && event.keyCode===37)){
+      if (
+        (curserPosition === this.character.length && event.keyCode === 39) ||
+        (curserPosition === 0 && event.keyCode === 37)
+      ) {
         this.moveFocus.emit({
           keyCode: event.keyCode,
           side: this.side,
           letterIdx: this.index
-        })
+        });
       }
 
       // 8 is backspace
     } else if (event.keyCode === 8) {
-      this.onBackSpace(curserPosition, this.side)
+      this.onBackSpace(curserPosition, this.side);
     } else if (event.keyCode === 46) {
-      this.deleteChar(curserPosition, this.side)
+      this.deleteChar(curserPosition, this.side);
     } else if (
       event.keyCode === 16 ||
       event.keyCode === 20 ||
       event.keyCode === 13 ||
       event.keyCode === 17
     ) {
-      return
+      return;
     } else if (this.character.length === 2) {
       this.characterAdded.emit({
         character: this.character.charAt(1),
         letterIdx: this.index
-      })
-      this.character = this.character.charAt(0)
+      });
+      this.character = this.character.charAt(0);
     } else if (this.character.length === 1) {
       this.characterChanged.emit({
         prevChar: this.currChar,
         newChar: this.character,
         letterIdx: this.index
-      })
-      this.currChar = this.character
+      });
+      this.currChar = this.character;
     }
   }
 
-  assignCharacterType () {
-    var isLetter = this.services.isLetterVerification(this.character)
+  assignCharacterType() {
+    var isLetter = this.services.isLetterVerification(this.character);
     if (isLetter) {
-      this.typeOfChar = charTypes.Letter
-    } else if (this.character === ' ') {
-      this.typeOfChar = charTypes.Space
+      this.typeOfChar = charTypes.Letter;
+    } else if (this.character === " ") {
+      this.typeOfChar = charTypes.Space;
     } else {
-      this.typeOfChar = charTypes.Punctuation
+      this.typeOfChar = charTypes.Punctuation;
     }
   }
 
-  onBackSpace (curserPosition, side) {
+  onBackSpace(curserPosition, side) {
     if (curserPosition === 0 && this.character.length === 0) {
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar
-      })
+      });
     } else if (
       curserPosition === 0 &&
       this.character.length >= 1 &&
       this.index > 0
     ) {
-      this.deletePreviousNextChar.emit({
+      this.deletePreviousChar.emit({
         letterIdx: this.index - 1,
         side: this.side
-      })
+      });
     } else if (curserPosition !== 0) {
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
         side: side
-      })
-      this.currChar = this.character
-      return
+      });
+      this.currChar = this.character;
+      return;
     }
   }
 
-  deleteChar (curserPosition, side) {
-
-  }
-
-  getCaretPosition (currEl) {
-    document.getElementById(currEl).addEventListener('keyup', e => {
-      console.log('Caret at: ', e.target)
-    })
+  deleteChar(curserPosition, side) {
+    if (curserPosition === 0 && this.character.length === 0) {
+      this.delete.emit({
+        letterIdx: this.index,
+        character:this.currChar
+      });
+    } else if (curserPosition === this.character.length) {
+      this.deleteNextChar.emit({
+        letterIdx: this.index + 1,
+        side: this.side
+      });
+    }else if(this.character.length>0){
+      this.replaceLetter.emit({
+        newChar: this.character,
+        letterIdx: this.index,
+        side: side
+      });
+      this.currChar=this.character
+    }
   }
 
 }
