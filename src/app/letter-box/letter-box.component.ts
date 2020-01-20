@@ -35,8 +35,9 @@ export class LetterBoxComponent implements OnInit {
     letterIdx: number;
   }>();
   @Output() characterAdded = new EventEmitter<{
-    character: string;
-    letterIdx: number;
+    newChar: string;
+    oldChar: string;
+    idx: number;
   }>();
   @Output() delete = new EventEmitter<{
     letterIdx: number;
@@ -67,35 +68,25 @@ export class LetterBoxComponent implements OnInit {
 
   //
   handleKeyup(event: KeyboardEvent) {
-    // var side: PalindromSection;
-    var currEl = event.target as HTMLInputElement;
-    var curserPosition = currEl.selectionStart;
-    console.log("handleKeyup curserPosition", curserPosition);
+    let currEl = event.target as HTMLInputElement;
+    let curserPosition = currEl.selectionStart;
+    event.preventDefault();
+    this.setCursorPosition(currEl, 1);
 
-    // if (this.side === PalindromSection.Right) {
-    //   side = PalindromSection.Right
-    // } else if (this.side === PalindromSection.Left) {
-    //   side = PalindromSection.Left
-    // }
-    //37 & 39 are arrow keys
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
       return;
     } else if (event.keyCode === 37 || event.keyCode === 39) {
-      if (
-        (curserPosition === this.character.length && event.keyCode === 39) ||
-        (curserPosition === 0 && event.keyCode === 37)
-      ) {
+
         this.moveFocus.emit({
           keyCode: event.keyCode,
           side: this.side,
           letterIdx: this.index
         });
-      }
-
       // 8 is backspace
     } else if (event.keyCode === 8) {
       this.onBackSpace(curserPosition, this.side);
     } else if (event.keyCode === 46) {
+      this.setCursorPosition(0, currEl);
       this.deleteChar(curserPosition, this.side);
     } else if (
       event.keyCode === 16 ||
@@ -105,11 +96,15 @@ export class LetterBoxComponent implements OnInit {
     ) {
       return;
     } else if (this.character.length === 2) {
+
       this.characterAdded.emit({
-        character: this.character.charAt(1),
-        letterIdx: this.index
+        newChar: this.character.charAt(1),
+        oldChar: this.currChar,
+        idx: this.index,
       });
       this.character = this.character.charAt(0);
+      this.currChar = this.character.charAt(0);
+
     } else if (this.character.length === 1) {
       this.characterChanged.emit({
         prevChar: this.currChar,
@@ -121,7 +116,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   assignCharacterType() {
-    var isLetter = this.services.isLetterVerification(this.character);
+    let isLetter = this.services.isLetterVerification(this.character);
     if (isLetter) {
       this.typeOfChar = charTypes.Letter;
     } else if (this.character === " ") {
@@ -161,23 +156,37 @@ export class LetterBoxComponent implements OnInit {
     if (curserPosition === 0 && this.character.length === 0) {
       this.delete.emit({
         letterIdx: this.index,
-        character:this.currChar
+        character: this.currChar
       });
     } else if (curserPosition === this.character.length) {
       this.deleteNextChar.emit({
         letterIdx: this.index + 1,
         side: this.side
       });
-    }else if(this.character.length>0){
+    } else if (this.character.length > 0) {
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
         side: side
       });
-      this.currChar=this.character
+      this.currChar = this.character;
     }
   }
 
+  setCursorPosition(currEl, caretPos) {
+    if (currEl.setSelectionRange) {
+      currEl.focus();
+      currEl.setSelectionRange(caretPos, caretPos);
+
+      // IE8 and below
+    } else if (currEl.createTextRange) {
+      let range = currEl.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", caretPos);
+      range.moveStart("character", caretPos);
+      range.select();
+    }
+  }
 }
 
 //TODO: read about preventDefault()
