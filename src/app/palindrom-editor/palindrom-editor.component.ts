@@ -129,14 +129,10 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   onNewCharFromPivot($event) {
-    // this.pivotIsWorking=true;
-    this.addNewChar(
-      null,
-      $event.newLetter,
-      this.lettersRight,
-      this.lettersLeft,
-      0
-    );
+    this.lettersRight.unshift($event.newChar);
+    if(this.services.isLetterVerification($event.newChar)){
+      this.lettersLeft.push($event.newChar);
+    }
   }
 
   moveFocus($event: {

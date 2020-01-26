@@ -10,7 +10,7 @@ import { PalindromSection } from "../common/services/services";
 export class PivotLetterComponent implements OnInit {
   input: string = "o";
   pivotIsCollapsed = false;
-  @Output() newUserInput = new EventEmitter<{ newLetter: string }>();
+  @Output() newUserInput = new EventEmitter<{ newChar: string }>();
   @Output() moveFocus = new EventEmitter<{
     keyCode: number;
     side: PalindromSection;
@@ -61,7 +61,7 @@ export class PivotLetterComponent implements OnInit {
     } else if (this.input.length === 2) {
       var newCharacter = this.input.charAt(0);
       this.newUserInput.emit({
-        newLetter: newCharacter
+        newChar: newCharacter
       });
       this.input = this.input.slice(1);
     }
