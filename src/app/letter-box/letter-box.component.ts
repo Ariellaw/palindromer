@@ -92,9 +92,9 @@ export class LetterBoxComponent implements OnInit {
         });
       // 8 is backspace
     } else if (event.keyCode === 8) {
+      console.log("backspace!")
       this.onBackSpace(this.side);
     } else if (event.keyCode === 46) {
-      // this.setCursorPosition(0, currEl);
       this.deleteChar(this.side);
     } else if (
       event.keyCode === 16 ||
@@ -135,13 +135,13 @@ export class LetterBoxComponent implements OnInit {
   }
 
   onBackSpace(side) {
-    if(this.character.length===1){
+    if(this.currChar.length>=1){
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar
       });
       return;
-    }else if(this.character.length>1){
+    }else if(this.currChar.length>1){
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
@@ -153,7 +153,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   deleteChar(side) {
-    if (this.character.length === 1) {
+    if (this.character.length<= 1) {
       this.delete.emit({
         letterIdx: this.index,
         character: this.currChar

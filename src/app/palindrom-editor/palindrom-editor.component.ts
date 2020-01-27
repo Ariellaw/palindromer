@@ -130,7 +130,7 @@ export class PalindromEditorComponent implements OnInit {
 
   onNewCharFromPivot($event) {
     this.lettersRight.unshift($event.newChar);
-    if(this.services.isLetterVerification($event.newChar)){
+    if (this.services.isLetterVerification($event.newChar)) {
       this.lettersLeft.push($event.newChar);
     }
   }
@@ -150,7 +150,14 @@ export class PalindromEditorComponent implements OnInit {
   /*HELPERFUNCTIONS */
 
   moveFocusRight(side, letterIdx) {
-    if (
+    console.log("moveFocusRight","letterIdx", letterIdx,"this.lettersRight.length", this.lettersRight.length,"this.lettersLeft.length", this.lettersLeft.length);
+
+    if (this.lettersRight.length === 1 && side === PalindromSection.Right) {
+      document.getElementById("right1").focus();
+    }else if(this.lettersLeft.length === 1 && side === PalindromSection.Left){
+      console.log("one")
+      document.getElementById("left1").focus();
+    } else if (
       side === PalindromSection.Right &&
       letterIdx === this.lettersRight.length - 1
     ) {
@@ -162,8 +169,14 @@ export class PalindromEditorComponent implements OnInit {
       this.pivotElement.focus();
     } else if (side === PalindromSection.Pivot) {
       document.getElementById("right0").focus();
+     } else if(this.lettersLeft.length ===0){
+        console.log("left 0");
+      this.pivotElement.focus();
     } else {
-      this.focusOnNextPreviousElement(side, letterIdx, false, 1);
+      console.log("got here")
+      var nextEl = document.getElementById(side+(letterIdx+1));
+      nextEl.focus();
+      this.focusOnNextPreviousElement(side, letterIdx, true, 0);
     }
   }
   moveFocusLeft(side: PalindromSection, letterIdx) {
@@ -272,7 +285,11 @@ export class PalindromEditorComponent implements OnInit {
     waitForIt,
     backOrForward,
     arrLength = null
-  ) {
+  ){
+    console.log("focusOnNextPreviousElement",side,
+      id,
+      waitForIt,
+      backOrForward)
     let nextLetterBox = document.getElementById(side + (id + backOrForward));
     if (nextLetterBox && !waitForIt) {
       nextLetterBox.focus();
