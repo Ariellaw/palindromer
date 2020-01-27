@@ -8,6 +8,8 @@ import { PalindromSection } from "../common/services/services";
   styleUrls: ["./pivot-letter.component.scss"]
 })
 export class PivotLetterComponent implements OnInit {
+  pivotEl:HTMLElement;
+  prevChar:string = '';
   input: string = "o";
   pivotIsCollapsed = false;
   @Output() newUserInput = new EventEmitter<{ newChar: string }>();
@@ -21,12 +23,18 @@ export class PivotLetterComponent implements OnInit {
 
   constructor(private services: ServicesService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.prevChar = this.input;
+    this.pivotEl = document.getElementById('pivot-input')
+  }
 
   expand() {
     this.pivotIsCollapsed = false;
   }
   onUserInput(event: KeyboardEvent) {
+    event.preventDefault();
+    this.services.setCursorPosition(this.pivotEl, 1);
+
     var isOneCharacter = this.input.length === 1;
     if (
       event.keyCode === 16 ||
@@ -45,6 +53,7 @@ export class PivotLetterComponent implements OnInit {
       if (!this.pivotIsCollapsed) {
         this.pivotIsCollapsed = true;
         this.input = "";
+        this.prevChar = "";
       } else {
         if (event.keyCode === 8) {
           this.backspace.emit();
@@ -59,11 +68,11 @@ export class PivotLetterComponent implements OnInit {
       event.preventDefault();
       return;
     } else if (this.input.length === 2) {
-      var newCharacter = this.input.charAt(0);
       this.newUserInput.emit({
-        newChar: newCharacter
+        newChar: this.prevChar
       });
-      this.input = this.input.slice(1);
+      this.input = this.input.charAt(1);
+      this.prevChar =this.input.charAt(1);
     }
   }
 }

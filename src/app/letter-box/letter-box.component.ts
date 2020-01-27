@@ -68,10 +68,11 @@ export class LetterBoxComponent implements OnInit {
 
   //
   handleKeyup(event: KeyboardEvent) {
+    event.preventDefault();
     let currEl = event.target as HTMLInputElement;
     let curserPosition = currEl.selectionStart;
-    event.preventDefault();
-    this.setCursorPosition(currEl, 1);
+    this.services.setCursorPosition(currEl, 1);
+    
 
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
       return;
@@ -86,7 +87,7 @@ export class LetterBoxComponent implements OnInit {
     } else if (event.keyCode === 8) {
       this.onBackSpace(curserPosition, this.side);
     } else if (event.keyCode === 46) {
-      this.setCursorPosition(0, currEl);
+      // this.setCursorPosition(0, currEl);
       this.deleteChar(curserPosition, this.side);
     } else if (
       event.keyCode === 16 ||
@@ -173,20 +174,7 @@ export class LetterBoxComponent implements OnInit {
     }
   }
 
-  setCursorPosition(currEl, caretPos) {
-    if (currEl.setSelectionRange) {
-      currEl.focus();
-      currEl.setSelectionRange(caretPos, caretPos);
 
-      // IE8 and below
-    } else if (currEl.createTextRange) {
-      let range = currEl.createTextRange();
-      range.collapse(true);
-      range.moveEnd("character", caretPos);
-      range.moveStart("character", caretPos);
-      range.select();
-    }
-  }
 }
 
 //TODO: read about preventDefault()

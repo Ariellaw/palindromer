@@ -25,7 +25,21 @@ export class ServicesService {
       character.match(this.hebrewLettersRegex)
     );
   }
+  setCursorPosition(currEl, caretPos) {
+    console.log("setCursorPosition",currEl, caretPos)
+    if (currEl.setSelectionRange) {
+      currEl.focus();
+      currEl.setSelectionRange(caretPos, caretPos);
 
+      // IE8 and below
+    } else if (currEl.createTextRange) {
+      let range = currEl.createTextRange();
+      range.collapse(true);
+      range.moveEnd("character", caretPos);
+      range.moveStart("character", caretPos);
+      range.select();
+    }
+  }
 
   setCompleteText(text){
     this.completeText = text;
