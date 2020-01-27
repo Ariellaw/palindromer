@@ -75,6 +75,7 @@ export class LetterBoxComponent implements OnInit {
   }
   
   handleKeyup(event: KeyboardEvent) {
+    console.log("event.key", event.key)
     event.preventDefault();
     var currEl = event.target as HTMLInputElement;
     // var currEl = event.target;
@@ -91,10 +92,9 @@ export class LetterBoxComponent implements OnInit {
           letterIdx: this.index
         });
       // 8 is backspace
-    } else if (event.keyCode === 8) {
-      console.log("backspace!")
+    } else if (event.keyCode === 8 || event.key==="Backspace") {
       this.onBackSpace(this.side);
-    } else if (event.keyCode === 46) {
+    } else if (event.keyCode === 46  || event.key==="Delete") {
       this.deleteChar(this.side);
     } else if (
       event.keyCode === 16 ||

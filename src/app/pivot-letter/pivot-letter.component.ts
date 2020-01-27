@@ -70,6 +70,7 @@ export class PivotLetterComponent implements OnInit {
     } else if (isOneCharacter) {
       this.pivotIsCollapsed = false;
       event.preventDefault();
+      this.prevChar = this.input;
       return;
     } else if (this.input.length === 2) {
       console.log("1 new character","new", this.input, "old", this.prevChar)
