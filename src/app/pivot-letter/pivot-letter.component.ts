@@ -31,6 +31,10 @@ export class PivotLetterComponent implements OnInit {
   expand() {
     this.pivotIsCollapsed = false;
   }
+  handleClick(){
+    this.services.setCursorPosition(this.pivotEl, 1);
+  }
+  
   onUserInput(event: KeyboardEvent) {
     event.preventDefault();
     this.services.setCursorPosition(this.pivotEl, 1);
@@ -68,11 +72,14 @@ export class PivotLetterComponent implements OnInit {
       event.preventDefault();
       return;
     } else if (this.input.length === 2) {
+      console.log("1 new character","new", this.input, "old", this.prevChar)
       this.newUserInput.emit({
         newChar: this.prevChar
       });
+      this.prevChar = this.input.charAt(1);
       this.input = this.input.charAt(1);
-      this.prevChar =this.input.charAt(1);
+      console.log("2 new character","new", this.input, "old", this.prevChar)
+
     }
   }
 }

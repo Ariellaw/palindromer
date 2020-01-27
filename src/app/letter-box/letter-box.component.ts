@@ -14,6 +14,7 @@ enum charTypes {
   styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
+  currEl:HTMLElement;
   currChar: string = "";
   typeOfChar: charTypes = charTypes.Letter;
   @Input() character: string = "";
@@ -64,13 +65,19 @@ export class LetterBoxComponent implements OnInit {
     if (this.side === "left") {
       this.side = PalindromSection.Left;
     } else this.side = PalindromSection.Right;
+    // this.currEl = document.getElementById(this.side+this.index);
+
   }
 
-  //
+  handleClick(){
+    var currEl = event.target as HTMLInputElement;
+    this.services.setCursorPosition(currEl, 1);
+  }
+  
   handleKeyup(event: KeyboardEvent) {
     event.preventDefault();
-    let currEl = event.target as HTMLInputElement;
-    let curserPosition = currEl.selectionStart;
+    var currEl = event.target as HTMLInputElement;
+    // var currEl = event.target;
     this.services.setCursorPosition(currEl, 1);
     
 
@@ -85,10 +92,10 @@ export class LetterBoxComponent implements OnInit {
         });
       // 8 is backspace
     } else if (event.keyCode === 8) {
-      this.onBackSpace(curserPosition, this.side);
+      this.onBackSpace(this.side);
     } else if (event.keyCode === 46) {
       // this.setCursorPosition(0, currEl);
-      this.deleteChar(curserPosition, this.side);
+      this.deleteChar(this.side);
     } else if (
       event.keyCode === 16 ||
       event.keyCode === 20 ||
@@ -127,22 +134,14 @@ export class LetterBoxComponent implements OnInit {
     }
   }
 
-  onBackSpace(curserPosition, side) {
-    if (curserPosition === 0 && this.character.length === 0) {
+  onBackSpace(side) {
+    if(this.character.length===1){
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar
       });
-    } else if (
-      curserPosition === 0 &&
-      this.character.length >= 1 &&
-      this.index > 0
-    ) {
-      this.deletePreviousChar.emit({
-        letterIdx: this.index - 1,
-        side: this.side
-      });
-    } else if (curserPosition !== 0) {
+      return;
+    }else if(this.character.length>1){
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
@@ -150,21 +149,16 @@ export class LetterBoxComponent implements OnInit {
       });
       this.currChar = this.character;
       return;
-    }
+      }   
   }
 
-  deleteChar(curserPosition, side) {
-    if (curserPosition === 0 && this.character.length === 0) {
+  deleteChar(side) {
+    if (this.character.length === 1) {
       this.delete.emit({
         letterIdx: this.index,
         character: this.currChar
       });
-    } else if (curserPosition === this.character.length) {
-      this.deleteNextChar.emit({
-        letterIdx: this.index + 1,
-        side: this.side
-      });
-    } else if (this.character.length > 0) {
+    } else if (this.character.length > 1) {
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
