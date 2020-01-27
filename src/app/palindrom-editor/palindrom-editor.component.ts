@@ -64,15 +64,7 @@ export class PalindromEditorComponent implements OnInit {
     this.isRightToLeft = isRightToLeft;
   }
   onAddCharRight($event) {
-    // let rightIdx = $event.letterIdx;
-    // let leftIdx = this.lettersRight.length - 1 - rightIdx;
-    // this.focusOnNextPreviousElement(
-    //   PalindromSection.Right,
-    //   rightIdx,
-    //   true,
-    //   1,
-    //   this.lettersRight.length
-    // );
+    console.log("onAddCharRight event", $event)
     this.addNewChar(
       $event.oldChar,
       $event.newChar,
@@ -80,6 +72,12 @@ export class PalindromEditorComponent implements OnInit {
       this.lettersLeft,
       $event.idx
     );
+    // this.focusOnNextPreviousElement(
+    //   PalindromSection.Right,
+    //   $event.idx,
+    //   true,
+    //   1,
+    // );
   }
 
   onAddCharLeft($event) {
@@ -281,21 +279,21 @@ export class PalindromEditorComponent implements OnInit {
 
   focusOnNextPreviousElement(
     side: PalindromSection,
-    id,
+    idx,
     waitForIt,
     backOrForward,
     arrLength = null
   ){
     console.log("focusOnNextPreviousElement",side,
-      id,
+    idx,
       waitForIt,
       backOrForward)
-    let nextLetterBox = document.getElementById(side + (id + backOrForward));
+    let nextLetterBox = document.getElementById(side + (idx + backOrForward));
     if (nextLetterBox && !waitForIt) {
       nextLetterBox.focus();
     } else if (waitForIt) {
       let checkExist = setInterval(function() {
-        nextLetterBox = document.getElementById(side + (id + backOrForward));
+        nextLetterBox = document.getElementById(side + (idx + backOrForward));
         if (nextLetterBox) {
           nextLetterBox.focus();
           clearInterval(checkExist);

@@ -3,6 +3,12 @@
     <div class=main-container>
         <app-palindrom-editor></app-palindrom-editor>
         <app-text></app-text>
+        <div class="message-container" *ngIf="displayMessage">
+            <button style="cursor:pointer" class="close" aria-label="Close" (click)="closeMessage()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            <h1>This app has limited functionality on mobile devices</h1>
+        </div>
     </div>
     <app-footer></app-footer>
 </div>

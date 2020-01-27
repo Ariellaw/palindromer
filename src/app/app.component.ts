@@ -6,12 +6,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  // title = 'palindromer';
+ displayMessage=true;
 
   ngOnInit() {
   }
 
   ngOnChanges(event){
+  }
+  closeMessage(){
+    this.displayMessage = false;
   }
  
 }
