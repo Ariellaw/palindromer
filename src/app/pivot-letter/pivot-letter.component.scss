@@ -11,7 +11,7 @@
   &:focus {
     border: 3px solid $focus_color;
     outline: none;
-    text-shadow: 0 0 0 red;
+    text-shadow: 0 0 0 $emphasis_red;
   }
 }
 
