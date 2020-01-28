@@ -14,7 +14,7 @@ enum charTypes {
   styleUrls: ["./letter-box.component.scss"]
 })
 export class LetterBoxComponent implements OnInit {
-  currEl:HTMLElement;
+  currEl: HTMLElement;
   currChar: string = "";
   typeOfChar: charTypes = charTypes.Letter;
   @Input() character: string = "";
@@ -66,35 +66,31 @@ export class LetterBoxComponent implements OnInit {
       this.side = PalindromSection.Left;
     } else this.side = PalindromSection.Right;
     // this.currEl = document.getElementById(this.side+this.index);
-
   }
 
-  handleClick(){
+  handleClick() {
+    console.log("handleClick");
     var currEl = event.target as HTMLInputElement;
     this.services.setCursorPosition(currEl, 1);
   }
-  
+
   handleKeyup(event: KeyboardEvent) {
-    console.log("event.key", event.key)
     event.preventDefault();
     var currEl = event.target as HTMLInputElement;
-    // var currEl = event.target;
     this.services.setCursorPosition(currEl, 1);
-    
 
     if (event.shiftKey && (event.keyCode === 37 || event.keyCode === 39)) {
       return;
     } else if (event.keyCode === 37 || event.keyCode === 39) {
-
-        this.moveFocus.emit({
-          keyCode: event.keyCode,
-          side: this.side,
-          letterIdx: this.index
-        });
+      this.moveFocus.emit({
+        keyCode: event.keyCode,
+        side: this.side,
+        letterIdx: this.index
+      });
       // 8 is backspace
-    } else if (event.keyCode === 8 || event.key==="Backspace") {
+    } else if (event.keyCode === 8 || event.key === "Backspace") {
       this.onBackSpace(this.side);
-    } else if (event.keyCode === 46  || event.key==="Delete") {
+    } else if (event.keyCode === 46 || event.key === "Delete") {
       this.deleteChar(this.side);
     } else if (
       event.keyCode === 16 ||
@@ -104,15 +100,13 @@ export class LetterBoxComponent implements OnInit {
     ) {
       return;
     } else if (this.character.length === 2) {
-
       this.characterAdded.emit({
         newChar: this.character.charAt(1),
         oldChar: this.currChar,
-        idx: this.index,
+        idx: this.index
       });
       this.character = this.character.charAt(0);
       this.currChar = this.character.charAt(0);
-
     } else if (this.character.length === 1) {
       this.characterChanged.emit({
         prevChar: this.currChar,
@@ -135,13 +129,13 @@ export class LetterBoxComponent implements OnInit {
   }
 
   onBackSpace(side) {
-    if(this.currChar.length>=1){
+    if (this.currChar.length >= 1) {
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar
       });
       return;
-    }else if(this.currChar.length>1){
+    } else if (this.currChar.length > 1) {
       this.replaceLetter.emit({
         newChar: this.character,
         letterIdx: this.index,
@@ -149,11 +143,11 @@ export class LetterBoxComponent implements OnInit {
       });
       this.currChar = this.character;
       return;
-      }   
+    }
   }
 
   deleteChar(side) {
-    if (this.character.length<= 1) {
+    if (this.character.length <= 1) {
       this.delete.emit({
         letterIdx: this.index,
         character: this.currChar
@@ -167,8 +161,6 @@ export class LetterBoxComponent implements OnInit {
       this.currChar = this.character;
     }
   }
-
-
 }
 
 //TODO: read about preventDefault()

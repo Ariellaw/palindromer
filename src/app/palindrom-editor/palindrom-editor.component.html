@@ -1,4 +1,4 @@
-<div  [ngClass]="{'rtl':isRightToLeft}">
+<div id="palindrom-container" [ngClass]="{'rtl':isRightToLeft}">
     <div class="palindrom-container" id="palindrom-container">
         <app-letter-box (replaceLetter)="onEdit($event)" (deleteNextChar)="onDeleteNextChar($event)" (deletePreviousChar)="onDeletePreviousChar($event)" (moveFocus)="moveFocus($event)" (backspace)="onBackspaceLeft($event)"
             *ngFor="let currLetter of lettersLeft ; let i = index" side="left" [character]="currLetter" [index]="i"
