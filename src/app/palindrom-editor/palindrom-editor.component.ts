@@ -82,16 +82,22 @@ export class PalindromEditorComponent implements OnInit {
       this.lettersLeft,
       $event.idx
     )
+    this.focusOnNextPreviousElement(
+        PalindromSection.Right,
+        $event.idx,
+        true,
+        1,
+      )
   }
 
   onAddCharLeft ($event) {
-    // this.focusOnNextPreviousElement(
-    //   PalindromSection.Left,
-    //   leftIdx,
-    //   true,
-    //   1,
-    //   this.lettersLeft.length
-    // );
+    this.focusOnNextPreviousElement(
+      PalindromSection.Left,
+      $event.idx,
+      true,
+      1,
+      this.lettersLeft.length
+    );
 
     this.addNewChar(
       $event.oldChar,
@@ -219,7 +225,8 @@ export class PalindromEditorComponent implements OnInit {
       document.getElementById('left1').focus()
       return
     }
-    this.moveFocusLeft(PalindromSection.Left, $event.letterIdx)
+    this.moveFocusLeft(PalindromSection.Left, $event.letterIdx);
+    console.log("last print out", this.lettersRight, this.lettersLeft);
   }
 
   onBackspaceRight ($event: { letterIdx: number; character: string }) {
@@ -231,6 +238,7 @@ export class PalindromEditorComponent implements OnInit {
     )
     this.moveFocusLeft(PalindromSection.Right, $event.letterIdx)
   }
+
   deleteRight($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersLeft,
@@ -238,11 +246,7 @@ export class PalindromEditorComponent implements OnInit {
       $event.letterIdx,
       $event.character
     )
-    console.log("deleteRight", $event.letterIdx, this.lettersRight.length, $event.letterIdx+1===this.lettersRight.length)
-    // if($event.letterIdx+1===this.lettersRight.length){
-    //   var el= document.getElementById(`${PalindromSection.Right}${$event.letterIdx}`);
-    //   el.focus();
-    // }
+
     this.moveFocusRight(PalindromSection.Right, $event.letterIdx, 0)
   }
 
@@ -280,9 +284,12 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   getIdxFromLetterOnOtherSide (char, arr1, arr2, idx2) {
-    let letterIdx = this.countLetterUntilIndex(idx2, char, arr2)
+    console.log("getIdxFromLetterOnOtherSide char, arr1, arr2, idx2", char, arr1, arr2, idx2)
+    let letterIdx = this.countLetterUntilIndex(idx2, char, arr2);
+    console.log("letterIdx of deleted letter",letterIdx)
 
     let idx1 = this.findIndexOnOppositeSide(arr1, char, letterIdx)
+    console.log("ipposide id", idx1)
 
     return idx1
   }
@@ -323,11 +330,11 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
 
-  deleteChar (arr1, arr2, idx2, newChar) {
+  deleteChar(arr1, arr2, idx2, newChar) {
     let idx2Exists = this.verifyIdx(arr2, idx2)
 
     if (idx2Exists) {
-      let isLetter = this.services.isLetterVerification(newChar)
+      let isLetter = this.services.isLetterVerification(newChar);
       if (isLetter) {
         let idx1 = this.getIdxFromLetterOnOtherSide(newChar, arr1, arr2, idx2)
         let idx1Exists = this.verifyIdx(arr1, idx1)
@@ -336,6 +343,7 @@ export class PalindromEditorComponent implements OnInit {
         }
       }
       arr2.splice(idx2, 1)
+      console.log("arr1", arr1, "arr2", arr2);
     }
   }
   onEdit ($event) {
@@ -396,22 +404,25 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   countLetterUntilIndex (idx, letter, arr) {
+    console.log("countLetterUntilIndex", "idx", idx, arr)
     let letterIdx = 0
     for (let i = 0; i <= idx; i++) {
       if (this.services.isLetterVerification(arr[i])) {
         letterIdx++
       }
     }
-    return letterIdx
+    return letterIdx;
   }
 
   findIndexOnOppositeSide (lettersArr, letter, letterIdx) {
+    console.log("findIndexOnOppositeSide", lettersArr, letterIdx)
     for (let i = lettersArr.length - 1; i >= 0; i--) {
       if (this.services.isLetterVerification(lettersArr[i])) {
-        letterIdx--
+        letterIdx--;
+        console.log("yay findIndexOnOppositeSide")
       }
       if (letterIdx === 0) {
-        return i
+        return i;
       }
     }
   }
