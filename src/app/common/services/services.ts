@@ -26,7 +26,6 @@ export class ServicesService {
     );
   }
   setCursorPosition(currEl, caretPos) {
-    console.log("setCursorPosition currElid, caretPos", currEl.id, caretPos)
     if (currEl.setSelectionRange) {
       currEl.focus();
       currEl.setSelectionRange(caretPos, caretPos);

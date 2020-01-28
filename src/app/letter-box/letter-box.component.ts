@@ -69,7 +69,6 @@ export class LetterBoxComponent implements OnInit {
   }
 
   handleClick() {
-    console.log("handleClick");
     var currEl = event.target as HTMLInputElement;
     this.services.setCursorPosition(currEl, 1);
   }
@@ -129,7 +128,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   onBackSpace(side) {
-    if (this.currChar.length >= 1) {
+    if (this.currChar.length <= 1) {
       this.backspace.emit({
         letterIdx: this.index,
         character: this.currChar

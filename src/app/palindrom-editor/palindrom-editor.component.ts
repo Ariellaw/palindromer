@@ -152,8 +152,10 @@ export class PalindromEditorComponent implements OnInit {
   /*HELPERFUNCTIONS */
 
   moveFocusRight (side, letterIdx, isArrow=0) {
-    console.log('moveFocusRight', side, letterIdx)
-    if (this.lettersRight.length === 1 && side === PalindromSection.Right) {
+    if (this.lettersRight.length === 0 && side === PalindromSection.Right) {
+      this.pivotElement.focus();
+    } 
+    else if (this.lettersRight.length === 1 && side === PalindromSection.Right) {
       document.getElementById('right1').focus()
     } else if (
       this.lettersLeft.length === 1 &&
@@ -162,9 +164,11 @@ export class PalindromEditorComponent implements OnInit {
       document.getElementById('left1').focus()
     } else if (
       side === PalindromSection.Right &&
-      letterIdx === this.lettersRight.length - 1
+      (letterIdx === this.lettersRight.length || letterIdx === this.lettersRight.length-1 && isArrow)
     ) {
-      document.getElementById('left0').focus()
+      this.focusOnNextPreviousElement(PalindromSection.Left, 0, true, 0)
+      // var el =  document.getElementById('left1');
+    //  el.focus();
     } else if (
       side === PalindromSection.Left &&
       letterIdx === this.lettersLeft.length - 1
@@ -227,14 +231,19 @@ export class PalindromEditorComponent implements OnInit {
     )
     this.moveFocusLeft(PalindromSection.Right, $event.letterIdx)
   }
-  deleteRight ($event: { letterIdx: number; character: string }) {
+  deleteRight($event: { letterIdx: number; character: string }) {
     this.deleteChar(
       this.lettersLeft,
       this.lettersRight,
       $event.letterIdx,
       $event.character
     )
-    this.moveFocusRight(PalindromSection.Right, $event.letterIdx)
+    console.log("deleteRight", $event.letterIdx, this.lettersRight.length, $event.letterIdx+1===this.lettersRight.length)
+    // if($event.letterIdx+1===this.lettersRight.length){
+    //   var el= document.getElementById(`${PalindromSection.Right}${$event.letterIdx}`);
+    //   el.focus();
+    // }
+    this.moveFocusRight(PalindromSection.Right, $event.letterIdx, 0)
   }
 
   deleteLeft ($event: { letterIdx: number; character: string }) {
