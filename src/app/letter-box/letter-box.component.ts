@@ -128,6 +128,7 @@ export class LetterBoxComponent implements OnInit {
   }
 
   onBackSpace(side) {
+    // event.preventDefault();
     if (this.currChar.length <= 1) {
       this.backspace.emit({
         letterIdx: this.index,
