@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PalindromEditorComponent } from './palindrom-editor.component';
+import {FormsModule} from '@angular/forms';
+import {LetterBoxComponent} from '../letter-box/letter-box.component';
+import {NavbarComponent} from '../navbar/navbar.component';
+import {PivotLetterComponent} from '../pivot-letter/pivot-letter.component';
 
 describe('PalindromEditorComponent', () => {
   let component: PalindromEditorComponent;
@@ -8,7 +12,12 @@ describe('PalindromEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PalindromEditorComponent ]
+      imports: [ FormsModule ],
+      declarations: [
+        PalindromEditorComponent,
+        LetterBoxComponent,
+        PivotLetterComponent
+      ]
     })
     .compileComponents();
   }));
