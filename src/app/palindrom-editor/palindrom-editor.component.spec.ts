@@ -31,18 +31,22 @@ describe('PalindromEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain "tacocat" when first loaded', () => {
+  it('should contain "tacocat" when first loaded', async() => {
     fixture.detectChanges();
 
     let compiled = fixture.nativeElement;
 
-    //get text content of the palindrom editor
-    // let lettersInputs = compiled.querySelectorAll('input'); //this should work, but it doesn't for some reason, so I do this instead:
-    // let lettersInputs = document.querySelectorAll('#palindrom-container  input');
-    let lettersInputs = compiled.querySelectorAll('#palindrom-container  input');
+    let lettersInputs = compiled.querySelectorAll('.basic-char-box');
     let palindromContent = "";
-    lettersInputs.forEach( inp => palindromContent += inp.value)
 
-    expect(palindromContent).toBe('tacocat');
+    fixture.whenStable().then(() => {
+      lettersInputs.forEach( inp => {
+        console.log("cat", inp.id, inp.value, "x")
+        palindromContent += inp.value
+      });
+      expect(palindromContent).toBe('tacocat');
+
+    });
+
   });
 });
