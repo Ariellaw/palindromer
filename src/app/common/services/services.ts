@@ -13,7 +13,9 @@ export enum PalindromSection {
 })
 export class ServicesService {
   textChanged = new Subject<string>();
+  directionChanged = new Subject<boolean>()
 
+  isRightToLeft:boolean = false;
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
@@ -47,7 +49,11 @@ export class ServicesService {
     console.log("complete text", text)
     this.completeText = text;
     this.textChanged.next(this.completeText);
-
   }
 
+  setDirection(isRightToLeft){
+    console.log("step 2 RTL", isRightToLeft)
+    this.isRightToLeft = isRightToLeft;
+    this.directionChanged.next(this.isRightToLeft)
+  }
 }

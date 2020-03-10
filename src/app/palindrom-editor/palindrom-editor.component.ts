@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ServicesService } from "../common/services/services";
 import { PalindromSection } from "../common/services/services";
+import { Subscription } from 'rxjs'
+
 
 @Component({
   selector: "app-palindrom-editor",
@@ -8,7 +10,7 @@ import { PalindromSection } from "../common/services/services";
   styleUrls: ["./palindrom-editor.component.scss"],
   // providers: [ServicesService]
 })
-export class PalindromEditorComponent implements OnInit {
+export class PalindromEditorComponent implements OnInit, OnDestroy {
   lettersLeft = ["t", "a", "c"];
   lettersRight = ["c", "a", "t"];
   pivotChar=["o"]
@@ -17,6 +19,7 @@ export class PalindromEditorComponent implements OnInit {
   isRightToLeft: boolean = false;
   typingTimer; //timer identifier
   doneTypingInterval = 1000;
+  langSubscription: Subscription
 
   constructor(private services: ServicesService) {}
 
@@ -25,6 +28,13 @@ export class PalindromEditorComponent implements OnInit {
     this.pivotElement.focus();
     this.pivotLetterBox = document.getElementById(PalindromSection.Pivot) as HTMLInputElement;
     this.setCompleteText();
+
+    this.langSubscription = this.services.directionChanged.subscribe(
+      (isRightToLeft: boolean) => {
+        console.log("subscription RTL", isRightToLeft)
+        this.isRightToLeft = isRightToLeft
+      }
+    )
 
   }
 
@@ -64,7 +74,8 @@ export class PalindromEditorComponent implements OnInit {
     }
   }
   switchTextDirection(isRightToLeft) {
-    this.isRightToLeft = isRightToLeft;
+    console.log("step 1 isRightToLeft", isRightToLeft)
+    this.services.setDirection(isRightToLeft);
   }
   onAddCharRight($event) {
     // setTimeout(() => this.focusOnNextPreviousElement(
@@ -438,10 +449,13 @@ export class PalindromEditorComponent implements OnInit {
   }
 
   setCompleteText(){
-
-    
-    // console.log("setCompleteText",a.charAt(1), a.length , this.pivotElement)
+  // console.log("setCompleteText",a.charAt(1), a.length , this.pivotElement)
     this.services.setCompleteText(this.lettersLeft.join('')  + this.pivotChar[0] + this.lettersRight.join(''))
-
   }
+
+  ngOnDestroy () {
+    this.langSubscription.unsubscribe();
+  }
+  
 }
+
