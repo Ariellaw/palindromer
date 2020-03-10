@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Subject } from 'rxjs';
 
 export enum PalindromSection {
   Left = "left",
@@ -11,11 +12,13 @@ export enum PalindromSection {
   providedIn: "root"
 })
 export class ServicesService {
+  textChanged = new Subject<string>();
+
   punctionationRegex = /(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/;
   latinLettersRegex = /^[A-Za-z]+$/;
   hebrewLettersRegex = "^[א-ת]+$";
   screenwidth:number;
-  completeText:string= "";
+  completeText:string= "yay";
 
   constructor() {}
 
@@ -41,7 +44,10 @@ export class ServicesService {
   }
 
   setCompleteText(text){
+    console.log("complete text", text)
     this.completeText = text;
+    this.textChanged.next(this.completeText);
+
   }
 
 }

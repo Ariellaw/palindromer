@@ -4,7 +4,7 @@
             *ngFor="let currLetter of lettersLeft ; let i = index" side="left" [character]="currLetter" [index]="i"
             (characterAdded)="onAddCharLeft($event)"  (characterChanged)="onCharacterChangedLeft($event)" (delete)="deleteLeft($event)">
         </app-letter-box>
-        <app-pivot-letter (moveFocus)="moveFocus($event)" (backspace)="backspaceFromPivot()"
+        <app-pivot-letter (setCompleteText)="setCompleteText($event)" (moveFocus)="moveFocus($event)" (backspace)="backspaceFromPivot()"
             (delete)="deleteFromPivot()" (newUserInput)="onNewCharFromPivot($event)"></app-pivot-letter>
         <app-letter-box (replaceLetter)="onEdit($event)"  (deleteNextChar)="onDeleteNextChar($event)" (deletePreviousChar)="onDeletePreviousChar($event)" (moveFocus)="moveFocus($event)" (backspace)="onBackspaceRight($event)"
             *ngFor="let currLetter of lettersRight; let i = index" side="right" [character]="currLetter" [index]="i"

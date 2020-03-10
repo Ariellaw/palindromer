@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { ServicesService } from "../common/services/services";
 import { PalindromSection } from "../common/services/services";
 
@@ -6,13 +6,14 @@ import { PalindromSection } from "../common/services/services";
   selector: "app-palindrom-editor",
   templateUrl: "./palindrom-editor.component.html",
   styleUrls: ["./palindrom-editor.component.scss"],
-  providers: [ServicesService]
+  // providers: [ServicesService]
 })
 export class PalindromEditorComponent implements OnInit {
   lettersLeft = ["t", "a", "c"];
   lettersRight = ["c", "a", "t"];
+  pivotChar=["o"]
   pivotElement: HTMLElement;
-  palindromContainerEl: HTMLElement;
+  pivotLetterBox:HTMLInputElement;
   isRightToLeft: boolean = false;
   typingTimer; //timer identifier
   doneTypingInterval = 1000;
@@ -20,13 +21,11 @@ export class PalindromEditorComponent implements OnInit {
   constructor(private services: ServicesService) {}
 
   ngOnInit() {
-    this.pivotElement = document.getElementById(
-      PalindromSection.Pivot
-    ) as HTMLElement;
+    this.pivotElement = document.getElementById(PalindromSection.Pivot) as HTMLElement;
     this.pivotElement.focus();
+    this.pivotLetterBox = document.getElementById(PalindromSection.Pivot) as HTMLInputElement;
+    this.setCompleteText();
 
-    this.services.setCompleteText("this is a completeText");
-    this.palindromContainerEl = document.getElementById("palindrom-container");
   }
 
   onDeleteNextChar($event) {
@@ -136,11 +135,21 @@ export class PalindromEditorComponent implements OnInit {
     );
   }
 
-  onNewCharFromPivot($event) {
-    this.lettersRight.unshift($event.newChar);
-    if (this.services.isLetterVerification($event.newChar)) {
-      this.lettersLeft.push($event.newChar);
+  onNewCharFromPivot($event:{newChar:string}) {
+    var char = $event.newChar;
+
+    if($event.newChar.length === 2){
+      this.lettersRight.unshift(char.charAt(0));
+      if (this.services.isLetterVerification(char.charAt(0))) {
+        this.lettersLeft.push(char.charAt(0));
+      }
+      this.pivotChar[0]=char.charAt(1)
     }
+    else{
+      this.pivotChar[0]=char.charAt(0)
+    }
+
+    this.setCompleteText();
   }
 
   moveFocus($event: {
@@ -325,6 +334,7 @@ export class PalindromEditorComponent implements OnInit {
       );
       oppositeArr.splice(idx1 + 1, 0, oldChar);
     }
+    this.setCompleteText();
   }
 
   deleteChar(arr1, arr2, idx2, newChar) {
@@ -341,6 +351,7 @@ export class PalindromEditorComponent implements OnInit {
       }
       arr2.splice(idx2, 1);
     }
+    this.setCompleteText();
   }
   onEdit($event) {
     let side = $event.side;
@@ -363,6 +374,7 @@ export class PalindromEditorComponent implements OnInit {
     }
     let el = document.getElementById(side + $event.letterIdx);
     el.focus();
+    this.setCompleteText();
   }
   replaceLetter(arr1, arr2, idx2, oldChar, newChar) {
     let isLetterOld = this.services.isLetterVerification(oldChar);
@@ -397,6 +409,7 @@ export class PalindromEditorComponent implements OnInit {
       arr2[idx2] = newChar;
       arr1.splice(idx1, 1);
     }
+    this.setCompleteText();
   }
 
   countLetterUntilIndex(idx, letter, arr) {
@@ -422,5 +435,13 @@ export class PalindromEditorComponent implements OnInit {
 
   verifyIdx(arr, idx) {
     return idx < arr.length;
+  }
+
+  setCompleteText(){
+
+    
+    // console.log("setCompleteText",a.charAt(1), a.length , this.pivotElement)
+    this.services.setCompleteText(this.lettersLeft.join('')  + this.pivotChar[0] + this.lettersRight.join(''))
+
   }
 }

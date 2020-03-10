@@ -10,9 +10,10 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { TextComponent } from './text/text.component';
-import {ConstantsService} from './common/services/constants'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import {ConstantsService} from './common/services/constants';
+import {ServicesService} from  './common/services/services';
 
 
 @NgModule({
@@ -31,7 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     FontAwesomeModule
   ],
-  providers: [ConstantsService],
+  providers: [ConstantsService,ServicesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -20,6 +20,7 @@ export class PivotLetterComponent implements OnInit {
   }>();
   @Output() backspace = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
+  @Output() setCompleteText = new EventEmitter<{char:string}>();
 
   constructor(private services: ServicesService) {}
 
@@ -69,16 +70,20 @@ export class PivotLetterComponent implements OnInit {
       }
     } else if (isOneCharacter) {
       this.pivotIsCollapsed = false;
+      
       event.preventDefault();
+      this.newUserInput.emit({
+        newChar: this.input
+      });
       this.prevChar = this.input;
       return;
     } else if (this.input.length === 2) {
       this.newUserInput.emit({
-        newChar: this.prevChar
+        newChar: this.input
       });
       this.prevChar = this.input.charAt(1);
       this.input = this.input.charAt(1);
-
     }
+    this.setCompleteText.emit({char:this.input})
   }
 }

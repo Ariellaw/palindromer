@@ -41,7 +41,6 @@ describe('PalindromEditorComponent', () => {
 
     fixture.whenStable().then(() => {
       lettersInputs.forEach( inp => {
-        console.log("cat", inp.id, inp.value, "x")
         palindromContent += inp.value
       });
       expect(palindromContent).toBe('tacocat');

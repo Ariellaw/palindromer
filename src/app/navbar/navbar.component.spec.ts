@@ -22,4 +22,10 @@ describe('NavbarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('verify title', () => {
+    fixture.detectChanges();
+    let compiled = fixture.nativeElement;
+    expect(compiled.querySelector('.title').innerText).toEqual('Palindromes Generator');
+  });
 });

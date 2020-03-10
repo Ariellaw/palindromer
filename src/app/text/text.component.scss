@@ -1,7 +1,5 @@
-@import '../../scss/variables.scss';
-@import '../../scss/variables.scss';
-
-
+@import "../../scss/variables.scss";
+@import "../../scss/variables.scss";
 
 .complete-text {
   border: 5px solid $emphasis_purple;
@@ -9,4 +7,7 @@
   width: 75%;
   margin-top: 10rem;
   background-color: $main_color;
+  color: #7fd7e8;
+  font-size: 20px;
+  font-weight: bold;
 }
