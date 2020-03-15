@@ -46,7 +46,6 @@ export class ServicesService {
   }
 
   setCompleteText(text){
-    console.log("complete text", text)
     this.completeText = text;
     this.textChanged.next(this.completeText);
   }
