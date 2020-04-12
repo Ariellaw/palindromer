@@ -34,6 +34,7 @@ export class PivotLetterComponent implements OnInit {
   }
   handleClick(){
     this.services.setCursorPosition(this.pivotEl, 1);
+    this.expand();
   }
   
   onUserInput(event: KeyboardEvent) {
